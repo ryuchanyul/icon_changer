@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유튜브 채널관리 매니저</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            z-index: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover::before {
+            opacity: 0.15;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 카드별 그라데이션 색상 */
+        .card-1::before {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .card-2::before {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .card-3::before {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .card-4::before {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .youtube-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .youtube-icon::after {
+            content: '▶';
+            color: white;
+            font-size: 24px;
+            margin-left: 3px;
+        }
+
+        .card-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-icon {
+            width: 28px;
+            height: 28px;
+            background: #333;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .info-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .status-badge {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .checklist {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 0;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .checklist-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .checklist-icon::after {
+            content: '○';
+            color: #666;
+            font-size: 14px;
+        }
+
+        .start-button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-button::after {
+            content: '→';
+            margin-left: 0.5rem;
+            transition: margin-left 0.3s;
+        }
+
+        .start-button:hover::after {
+            margin-left: 1rem;
+        }
+
+        .card-1 .start-button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        .card-2 .start-button {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .card-3 .start-button {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            box-shadow: 0 4px 15px rgba(67, 233, 123, 0.4);
+        }
+
+        .card-4 .start-button {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            box-shadow: 0 4px 15px rgba(250, 112, 154, 0.4);
+        }
+
+        .start-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .start-button:active {
+            transform: translateY(0);
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>유튜브 채널관리 매니저</h1>
+        </div>
+
+        <div class="grid">
+            <!-- 카드 1 -->
+            <div class="card card-1">
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="youtube-icon"></div>
+                        <div class="card-badge">
+                            <div class="info-icon">i</div>
+                            <span class="status-badge">오픈 대기</span>
+                        </div>
+                    </div>
+
+                    <h2 class="card-title">채널 시작 도우미</h2>
+                    <p class="card-description">
+                        유튜브 채널 개설을 위한 이름, 핸들명, 설명, 키워드, 프로필 이미지까지 AI가 생성합니다.
+                    </p>
+
+                    <ul class="checklist">
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>채널 이름 5개 추천</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>핸들명 생성</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>채널 설명 작성</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>키워드 추천</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>프로필 이미지 생성</span>
+                        </li>
+                    </ul>
+
+                    <button class="start-button" onclick="alert('준비 중입니다!')">시작하기</button>
+                </div>
+            </div>
+
+            <!-- 카드 2 -->
+            <div class="card card-2">
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="youtube-icon"></div>
+                        <div class="card-badge">
+                            <div class="info-icon">i</div>
+                            <span class="status-badge">오픈 대기</span>
+                        </div>
+                    </div>
+
+                    <h2 class="card-title">채널 시작 도우미</h2>
+                    <p class="card-description">
+                        유튜브 채널 개설을 위한 이름, 핸들명, 설명, 키워드, 프로필 이미지까지 AI가 생성합니다.
+                    </p>
+
+                    <ul class="checklist">
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>채널 이름 5개 추천</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>핸들명 생성</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>채널 설명 작성</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>키워드 추천</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>프로필 이미지 생성</span>
+                        </li>
+                    </ul>
+
+                    <button class="start-button" onclick="alert('준비 중입니다!')">시작하기</button>
+                </div>
+            </div>
+
+            <!-- 카드 3 -->
+            <div class="card card-3">
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="youtube-icon"></div>
+                        <div class="card-badge">
+                            <div class="info-icon">i</div>
+                            <span class="status-badge">오픈 대기</span>
+                        </div>
+                    </div>
+
+                    <h2 class="card-title">채널 시작 도우미</h2>
+                    <p class="card-description">
+                        유튜브 채널 개설을 위한 이름, 핸들명, 설명, 키워드, 프로필 이미지까지 AI가 생성합니다.
+                    </p>
+
+                    <ul class="checklist">
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>채널 이름 5개 추천</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>핸들명 생성</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>채널 설명 작성</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>키워드 추천</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>프로필 이미지 생성</span>
+                        </li>
+                    </ul>
+
+                    <button class="start-button" onclick="alert('준비 중입니다!')">시작하기</button>
+                </div>
+            </div>
+
+            <!-- 카드 4 -->
+            <div class="card card-4">
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="youtube-icon"></div>
+                        <div class="card-badge">
+                            <div class="info-icon">i</div>
+                            <span class="status-badge">오픈 대기</span>
+                        </div>
+                    </div>
+
+                    <h2 class="card-title">채널 시작 도우미</h2>
+                    <p class="card-description">
+                        유튜브 채널 개설을 위한 이름, 핸들명, 설명, 키워드, 프로필 이미지까지 AI가 생성합니다.
+                    </p>
+
+                    <ul class="checklist">
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>채널 이름 5개 추천</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>핸들명 생성</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>채널 설명 작성</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>키워드 추천</span>
+                        </li>
+                        <li class="checklist-item">
+                            <div class="checklist-icon"></div>
+                            <span>프로필 이미지 생성</span>
+                        </li>
+                    </ul>
+
+                    <button class="start-button" onclick="alert('준비 중입니다!')">시작하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
