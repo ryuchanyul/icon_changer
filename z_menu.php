@@ -1506,7 +1506,7 @@
             authUrl.searchParams.append('response_type', 'code');
             authUrl.searchParams.append('scope', scope);
             authUrl.searchParams.append('access_type', 'offline');
-            authUrl.searchParams.append('prompt', 'select_account');
+            authUrl.searchParams.append('prompt', 'consent');
             authUrl.searchParams.append('state', state);
 
             window.location.href = authUrl.toString();
