@@ -973,13 +973,163 @@
     </div>
 
     <!-- 도움말 모달 (생략 - 기존과 동일) -->
+    <!-- YouTube API 도움말 모달 -->
     <div class="modal-overlay" id="helpModal">
-        <!-- ... 기존 내용 유지 ... -->
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">YouTube API 키 발급 방법</h2>
+                <button class="modal-close" onclick="closeHelpModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="help-section">
+                    <div class="help-section-title">
+                        <span class="help-section-number">1</span>
+                        Google Cloud Console 접속
+                    </div>
+                    <div class="help-section-content">
+                        <p>아래 링크를 클릭하여 Google Cloud Console에 접속하세요.</p>
+                        <a href="https://console.cloud.google.com/" target="_blank" class="help-link">
+                            🔗 Google Cloud Console 열기
+                        </a>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section-title">
+                        <span class="help-section-number">2</span>
+                        새 프로젝트 생성
+                    </div>
+                    <div class="help-section-content">
+                        <p>1. 상단의 <strong>프로젝트 선택</strong> 드롭다운 클릭</p>
+                        <p>2. <strong>새 프로젝트</strong> 버튼 클릭</p>
+                        <p>3. 프로젝트 이름 입력 (예: "YouTube Manager")</p>
+                        <p>4. <strong>만들기</strong> 클릭</p>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section-title">
+                        <span class="help-section-number">3</span>
+                        YouTube Data API v3 활성화
+                    </div>
+                    <div class="help-section-content">
+                        <p>1. 좌측 메뉴에서 <strong>API 및 서비스 → 라이브러리</strong> 클릭</p>
+                        <p>2. 검색창에 <strong>"YouTube Data API v3"</strong> 입력</p>
+                        <p>3. <strong>YouTube Data API v3</strong> 클릭</p>
+                        <p>4. <strong>사용</strong> 버튼 클릭</p>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section-title">
+                        <span class="help-section-number">4</span>
+                        API 키 생성
+                    </div>
+                    <div class="help-section-content">
+                        <p>1. 좌측 메뉴에서 <strong>API 및 서비스 → 사용자 인증 정보</strong> 클릭</p>
+                        <p>2. 상단의 <strong>+ 사용자 인증 정보 만들기</strong> 클릭</p>
+                        <p>3. <strong>API 키</strong> 선택</p>
+                        <p>4. 생성된 API 키를 복사하여 입력란에 붙여넣기</p>
+
+                        <div class="warning-box">
+                            <div class="warning-box-title">⚠️ 보안 주의사항</div>
+                            <div class="warning-box-content">
+                                API 키는 외부에 노출되지 않도록 주의하세요.
+                                키 제한을 설정하여 무단 사용을 방지할 수 있습니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- OAuth 도움말 모달 (생략 - 기존과 동일) -->
+    <!-- OAuth 2.0 도움말 모달 -->
     <div class="modal-overlay" id="oauthHelpModal">
-        <!-- ... 기존 내용 유지 ... -->
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">OAuth 2.0 클라이언트 ID 발급 방법</h2>
+                <button class="modal-close" onclick="closeOAuthHelpModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="help-section">
+                    <div class="help-section-title">
+                        <span class="help-section-number">1</span>
+                        Google Cloud Console 접속
+                    </div>
+                    <div class="help-section-content">
+                        <p>아래 링크를 클릭하여 Google Cloud Console에 접속하세요.</p>
+                        <a href="https://console.cloud.google.com/" target="_blank" class="help-link">
+                            🔗 Google Cloud Console 열기
+                        </a>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section-title">
+                        <span class="help-section-number">2</span>
+                        OAuth 동의 화면 구성
+                    </div>
+                    <div class="help-section-content">
+                        <p>1. 좌측 메뉴에서 <strong>API 및 서비스 → OAuth 동의 화면</strong> 클릭</p>
+                        <p>2. <strong>외부</strong> 선택 후 <strong>만들기</strong> 클릭</p>
+                        <p>3. 앱 정보 입력:</p>
+                        <div class="code-block">
+앱 이름: YouTube Manager
+사용자 지원 이메일: (본인 이메일)
+개발자 연락처 정보: (본인 이메일)</div>
+                        <p>4. <strong>저장 후 계속</strong> 클릭</p>
+                        <p>5. <strong>범위</strong> 페이지에서 <strong>범위 추가 또는 삭제</strong> 클릭</p>
+                        <p>6. 다음 항목들을 검색하여 추가:</p>
+                        <div class="code-block">
+✓ YouTube Data API v3 (../auth/youtube.force-ssl)
+✓ 이메일 주소 보기 (../auth/userinfo.email)</div>
+                        <p>7. <strong>저장 후 계속</strong> 클릭</p>
+                        <p>8. 테스트 사용자 추가 (본인 Gmail 주소)</p>
+                        <p>9. <strong>저장 후 계속</strong> 클릭</p>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section-title">
+                        <span class="help-section-number">3</span>
+                        OAuth 2.0 클라이언트 ID 생성
+                    </div>
+                    <div class="help-section-content">
+                        <p>1. 좌측 메뉴에서 <strong>API 및 서비스 → 사용자 인증 정보</strong> 클릭</p>
+                        <p>2. 상단의 <strong>+ 사용자 인증 정보 만들기</strong> 클릭</p>
+                        <p>3. <strong>OAuth 클라이언트 ID</strong> 선택</p>
+                        <p>4. 애플리케이션 유형: <strong>웹 애플리케이션</strong> 선택</p>
+                        <p>5. 이름 입력 (예: "YouTube Manager Web")</p>
+                        <p>6. <strong>승인된 리디렉션 URI</strong>에 다음 주소 추가:</p>
+                        <div class="code-block">http://showrank.kr/premium_ch/oauth2callback.php</div>
+                        <p>7. <strong>만들기</strong> 클릭</p>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section-title">
+                        <span class="help-section-number">4</span>
+                        클라이언트 ID와 보안 비밀 복사
+                    </div>
+                    <div class="help-section-content">
+                        <p>1. 생성 완료 팝업에서 <strong>클라이언트 ID</strong>와 <strong>클라이언트 보안 비밀번호</strong> 복사</p>
+                        <p>2. 각각의 값을 입력란에 붙여넣기</p>
+                        <p>3. <strong>🔐 Google 계정 연결</strong> 버튼 클릭</p>
+
+                        <div class="info-box">
+                            <div class="info-box-title">💡 중요 정보</div>
+                            <div class="info-box-content">
+                                <strong>Refresh Token을 받으려면:</strong><br>
+                                • 처음 인증 시에만 Refresh Token이 발급됩니다<br>
+                                • 재인증 시 Refresh Token이 필요하면 Google 계정 권한 설정에서 앱을 삭제 후 다시 연결하세요<br>
+                                • <a href="https://myaccount.google.com/permissions" target="_blank" style="color: #17a2b8; text-decoration: underline;">Google 계정 권한 설정 바로가기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
