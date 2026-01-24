@@ -350,6 +350,45 @@
         .favorite-btn:hover {
             transform: scale(1.2);
         }
+
+        /* 복사 버튼 스타일 */
+        .copy-box {
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .copy-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .copy-box .detail-box-content {
+            padding-right: 5rem;
+        }
     </style>
 </head>
 <body>
@@ -962,9 +1001,10 @@
 
                         <h2 class="detail-title">${escapeHtml(title)}</h2>
 
-                        <div class="detail-box">
+                        <div class="detail-box copy-box">
                             <div class="detail-box-title">📺 채널 ID</div>
                             <div class="detail-box-content code">${channelId}</div>
+                            <button class="copy-btn" id="copyChannelId" onclick="copyToClipboard('${channelId}', 'copyChannelId')">📋 복사</button>
                         </div>
 
                         <div class="detail-box">
@@ -1021,9 +1061,10 @@
 
                         <h2 class="detail-title">${escapeHtml(title)}</h2>
 
-                        <div class="detail-box">
+                        <div class="detail-box copy-box">
                             <div class="detail-box-title">📺 채널 ID</div>
                             <div class="detail-box-content code">${channelId}</div>
+                            <button class="copy-btn" id="copyChannelId" onclick="copyToClipboard('${channelId}', 'copyChannelId')">📋 복사</button>
                         </div>
 
                         <div class="detail-box">
@@ -1281,6 +1322,61 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        // ==========================================
+        // 클립보드 복사
+        // ==========================================
+        function copyToClipboard(text, buttonId) {
+            const button = document.getElementById(buttonId);
+
+            // 클립보드 API 사용
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    // 성공 피드백
+                    const originalText = button.textContent;
+                    button.textContent = '✓ 복사됨!';
+                    button.classList.add('copied');
+
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('클립보드 복사 실패:', err);
+                    fallbackCopy(text, button);
+                });
+            } else {
+                // 폴백: 구형 브라우저 지원
+                fallbackCopy(text, button);
+            }
+        }
+
+        // 폴백 복사 방법
+        function fallbackCopy(text, button) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            try {
+                document.execCommand('copy');
+                const originalText = button.textContent;
+                button.textContent = '✓ 복사됨!';
+                button.classList.add('copied');
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('폴백 복사 실패:', err);
+                alert('복사에 실패했습니다. 직접 선택해서 복사해주세요.');
+            } finally {
+                document.body.removeChild(textarea);
+            }
         }
 
         // ==========================================
