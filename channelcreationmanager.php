@@ -58,19 +58,21 @@
 
         .menu-nav {
             display: flex;
-            gap: 2rem;
+            gap: 1rem;
             align-items: center;
+            flex-wrap: nowrap;
         }
 
         .menu-nav a {
             color: #666;
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.8rem;
             border-radius: 8px;
             transition: all 0.3s;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .menu-nav a:hover {
