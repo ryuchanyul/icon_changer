@@ -535,6 +535,210 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
+        /* 프로젝트 페이지 헤더 */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .page-header-left h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header-left p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .page-header-right {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .header-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-btn-settings {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header-btn-settings:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .header-btn-beta {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .header-btn-beta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .header-btn-new {
+            background: linear-gradient(135deg, #6f2dff, #5a1fd9);
+            color: white;
+        }
+
+        .header-btn-new:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(111, 45, 255, 0.4);
+        }
+
+        /* 프로젝트 카드 */
+        .project-card {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(111, 45, 255, 0.3);
+        }
+
+        .project-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .project-status {
+            background: rgba(111, 45, 255, 0.2);
+            color: #a78bfa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            padding: 0.25rem;
+            transition: color 0.3s;
+        }
+
+        .delete-btn:hover {
+            color: #ef4444;
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .project-step {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .edit-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .edit-link:hover {
+            color: #6f2dff;
+        }
+
+        /* 새 영상 만들기 카드 */
+        .new-project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 3rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 200px;
+        }
+
+        .new-project-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(111, 45, 255, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .new-project-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(111, 45, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            color: #a78bfa;
+        }
+
+        .new-project-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* 하단 메시지 */
+        .footer-message {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         /* 반응형 */
         @media (max-width: 768px) {
             .grid {
@@ -543,6 +747,21 @@
 
             .container {
                 padding: 1rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .page-header-right {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .header-btn {
+                flex: 1;
+                justify-content: center;
             }
 
             .header-container {
@@ -646,254 +865,146 @@
 
     <!-- 메인 컨테이너 -->
     <div class="container">
-        <!-- 단계별 프로세스 -->
-        <div class="process-steps">
-            <div class="step-item active" onclick="goToStep(1)">
-                <div class="step-circle">1</div>
-                <div class="step-label">설정</div>
+        <!-- 페이지 헤더 -->
+        <div class="page-header">
+            <div class="page-header-left">
+                <h1>내 프로젝트</h1>
+                <p>영상 자동화 프로젝트를 관리하세요</p>
             </div>
-            <div class="step-item" onclick="goToStep(2)">
-                <div class="step-circle">2</div>
-                <div class="step-label">대본 생성</div>
-            </div>
-            <div class="step-item" onclick="goToStep(3)">
-                <div class="step-circle">3</div>
-                <div class="step-label">음성 생성</div>
-            </div>
-            <div class="step-item" onclick="goToStep(4)">
-                <div class="step-circle">4</div>
-                <div class="step-label">이미지 생성</div>
-            </div>
-            <div class="step-item" onclick="goToStep(5)">
-                <div class="step-circle">5</div>
-                <div class="step-label">영상 생성</div>
-            </div>
-            <div class="step-item" onclick="goToStep(6)">
-                <div class="step-circle">6</div>
-                <div class="step-label">영상 편집기</div>
+            <div class="page-header-right">
+                <button class="header-btn header-btn-settings" onclick="alert('설정')">
+                    ⚙️ 설정
+                </button>
+                <button class="header-btn header-btn-beta" onclick="alert('오픈베타릿')">
+                    🏪 ✨ 오픈베타릿
+                </button>
+                <button class="header-btn header-btn-new" onclick="createNewProject()">
+                    ➕ 새 프로젝트
+                </button>
             </div>
         </div>
 
-        <!-- 섹션 제목 -->
-        <h2 class="section-title-main">채널 시작 도우미 선택</h2>
-
+        <!-- 프로젝트 그리드 -->
         <div class="grid">
-            <!-- 카드 1 -->
-            <div class="card card-1">
-                <div class="card-content">
-                    <div class="card-header">
-                        <div class="youtube-icon has-image">
-                            <img src="img/icons/ch01.png" alt="Channel Icon">
-                        </div>
-                        <div class="card-badge">
-                            <div class="info-icon">i</div>
-                            <span class="status-badge">오픈 대기</span>
-                        </div>
+            <!-- 새 영상 만들기 카드 -->
+            <div class="new-project-card" onclick="createNewProject()">
+                <div class="new-project-icon">
+                    ➕
+                </div>
+                <div class="new-project-text">새 영상 만들기</div>
+            </div>
+
+            <!-- 프로젝트 카드 1 -->
+            <div class="project-card" onclick="editProject(1)">
+                <div class="project-card-header">
+                    <span class="project-status">작성 중</span>
+                    <button class="delete-btn" onclick="deleteProject(event, 1)">🗑️</button>
+                </div>
+                <h3 class="project-title">새 프로젝트</h3>
+                <div class="project-footer">
+                    <div class="project-info">
+                        <span>⏱️ 1분 미만</span>
+                        <span class="project-step">Step 1/6</span>
                     </div>
-
-                    <h2 class="card-title">채널 시작 도우미</h2>
-                    <p class="card-description">
-                        유튜브 채널 개설을 위한 이름, 핸들명, 설명, 키워드, 프로필 이미지까지 AI가 생성합니다.
-                    </p>
-
-                    <ul class="checklist">
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>채널 이름 5개 추천</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>핸들명 생성</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>채널 설명 작성</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>키워드 추천</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>프로필 이미지 생성</span>
-                        </li>
-                    </ul>
-
-                    <button class="start-button" onclick="window.location.href='channelcreationmanager.php'">시작하기</button>
+                    <a href="channelcreationmanager.php" class="edit-link" onclick="event.stopPropagation()">편집 →</a>
                 </div>
             </div>
 
-            <!-- 카드 2 -->
-            <div class="card card-2">
-                <div class="card-content">
-                    <div class="card-header">
-                        <div class="youtube-icon has-image">
-                            <img src="img/icons/ch02.png" alt="Channel Icon">
-                        </div>
-                        <div class="card-badge">
-                            <div class="info-icon">i</div>
-                            <span class="status-badge">오픈 대기</span>
-                        </div>
+            <!-- 프로젝트 카드 2 -->
+            <div class="project-card" onclick="editProject(2)">
+                <div class="project-card-header">
+                    <span class="project-status">작성 중</span>
+                    <button class="delete-btn" onclick="deleteProject(event, 2)">🗑️</button>
+                </div>
+                <h3 class="project-title">새 프로젝트</h3>
+                <div class="project-footer">
+                    <div class="project-info">
+                        <span>⏱️ 11분</span>
+                        <span class="project-step">Step 1/6</span>
                     </div>
-
-                    <h2 class="card-title">채널 시작 도우미</h2>
-                    <p class="card-description">
-                        유튜브 채널 개설을 위한 이름, 핸들명, 설명, 키워드, 프로필 이미지까지 AI가 생성합니다.
-                    </p>
-
-                    <ul class="checklist">
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>채널 이름 5개 추천</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>핸들명 생성</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>채널 설명 작성</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>키워드 추천</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>프로필 이미지 생성</span>
-                        </li>
-                    </ul>
-
-                    <button class="start-button" onclick="window.location.href='channelcreationmanager.php'">시작하기</button>
+                    <a href="channelcreationmanager.php" class="edit-link" onclick="event.stopPropagation()">편집 →</a>
                 </div>
             </div>
 
-            <!-- 카드 3 -->
-            <div class="card card-3">
-                <div class="card-content">
-                    <div class="card-header">
-                        <div class="youtube-icon has-image">
-                            <img src="img/icons/ch03.png" alt="Channel Icon">
-                        </div>
-                        <div class="card-badge">
-                            <div class="info-icon">i</div>
-                            <span class="status-badge">오픈 대기</span>
-                        </div>
+            <!-- 프로젝트 카드 3 -->
+            <div class="project-card" onclick="editProject(3)">
+                <div class="project-card-header">
+                    <span class="project-status">작성 중</span>
+                    <button class="delete-btn" onclick="deleteProject(event, 3)">🗑️</button>
+                </div>
+                <h3 class="project-title">방금 무의미한 자료을 두드리셨나요? 알 수 없는 문자는 아무런 갈등도 줄 수 없습니다. 지</h3>
+                <div class="project-footer">
+                    <div class="project-info">
+                        <span>⏱️ 13분</span>
+                        <span class="project-step">Step 1/6</span>
                     </div>
-
-                    <h2 class="card-title">채널 시작 도우미</h2>
-                    <p class="card-description">
-                        유튜브 채널 개설을 위한 이름, 핸들명, 설명, 키워드, 프로필 이미지까지 AI가 생성합니다.
-                    </p>
-
-                    <ul class="checklist">
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>채널 이름 5개 추천</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>핸들명 생성</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>채널 설명 작성</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>키워드 추천</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>프로필 이미지 생성</span>
-                        </li>
-                    </ul>
-
-                    <button class="start-button" onclick="window.location.href='channelcreationmanager.php'">시작하기</button>
+                    <a href="channelcreationmanager.php" class="edit-link" onclick="event.stopPropagation()">편집 →</a>
                 </div>
             </div>
 
-            <!-- 카드 4 -->
-            <div class="card card-4">
-                <div class="card-content">
-                    <div class="card-header">
-                        <div class="youtube-icon has-image">
-                            <img src="img/icons/ch04.png" alt="Channel Icon">
-                        </div>
-                        <div class="card-badge">
-                            <div class="info-icon">i</div>
-                            <span class="status-badge">오픈 대기</span>
-                        </div>
+            <!-- 프로젝트 카드 4 -->
+            <div class="project-card" onclick="editProject(4)">
+                <div class="project-card-header">
+                    <span class="project-status">작성 중</span>
+                    <button class="delete-btn" onclick="deleteProject(event, 4)">🗑️</button>
+                </div>
+                <h3 class="project-title">새 프로젝트</h3>
+                <div class="project-footer">
+                    <div class="project-info">
+                        <span>⏱️ 역 1시간</span>
+                        <span class="project-step">Step 1/6</span>
                     </div>
-
-                    <h2 class="card-title">채널 시작 도우미</h2>
-                    <p class="card-description">
-                        유튜브 채널 개설을 위한 이름, 핸들명, 설명, 키워드, 프로필 이미지까지 AI가 생성합니다.
-                    </p>
-
-                    <ul class="checklist">
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>채널 이름 5개 추천</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>핸들명 생성</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>채널 설명 작성</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>키워드 추천</span>
-                        </li>
-                        <li class="checklist-item">
-                            <div class="checklist-icon"></div>
-                            <span>프로필 이미지 생성</span>
-                        </li>
-                    </ul>
-
-                    <button class="start-button" onclick="window.location.href='channelcreationmanager.php'">시작하기</button>
+                    <a href="channelcreationmanager.php" class="edit-link" onclick="event.stopPropagation()">편집 →</a>
                 </div>
             </div>
+        </div>
+
+        <!-- 하단 메시지 -->
+        <div class="footer-message">
+            모든 프로젝트를 불러왔습니다
         </div>
     </div>
 
     <script>
-        // 단계 이동 함수
-        function goToStep(stepNumber) {
-            // 모든 단계 아이템 가져오기
-            const steps = document.querySelectorAll('.step-item');
-
-            // 모든 단계 초기화
-            steps.forEach((step, index) => {
-                step.classList.remove('active', 'completed');
-
-                // 현재 단계보다 이전 단계는 완료 표시
-                if (index + 1 < stepNumber) {
-                    step.classList.add('completed');
-                }
-
-                // 현재 단계는 활성화
-                if (index + 1 === stepNumber) {
-                    step.classList.add('active');
-                }
-            });
-
-            // 여기에 각 단계별 콘텐츠 변경 로직 추가 가능
-            console.log('Step ' + stepNumber + ' activated');
+        // 새 프로젝트 생성
+        function createNewProject() {
+            if (confirm('새로운 영상 프로젝트를 시작하시겠습니까?')) {
+                window.location.href = 'channelcreationmanager.php';
+            }
         }
 
-        // 카드 클릭 시 채널 생성 페이지로 이동
+        // 프로젝트 편집
+        function editProject(projectId) {
+            console.log('프로젝트 편집:', projectId);
+            window.location.href = 'channelcreationmanager.php?project=' + projectId;
+        }
+
+        // 프로젝트 삭제
+        function deleteProject(event, projectId) {
+            event.stopPropagation(); // 부모 클릭 이벤트 방지
+
+            if (confirm('정말로 이 프로젝트를 삭제하시겠습니까?\n삭제된 프로젝트는 복구할 수 없습니다.')) {
+                // 실제 환경에서는 서버에 삭제 요청을 보내야 합니다
+                alert('프로젝트 ' + projectId + '가 삭제되었습니다.');
+
+                // 임시로 카드를 페이드아웃하고 제거
+                const card = event.target.closest('.project-card');
+                if (card) {
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        card.remove();
+                    }, 300);
+                }
+            }
+        }
+
+        // 페이지 로드 시 프로젝트 목록 로드 (추후 구현)
         document.addEventListener('DOMContentLoaded', function() {
-            const buttons = document.querySelectorAll('.start-button');
-            buttons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    // channelcreationmanager.php로 이동
-                    window.location.href = 'channelcreationmanager.php';
-                });
-            });
+            console.log('프로젝트 목록 페이지 로드됨');
+
+            // 저장된 프로젝트 목록을 로드하는 로직 추가 가능
+            // localStorage 또는 서버 API에서 프로젝트 데이터 가져오기
         });
     </script>
 </body>
