@@ -340,6 +340,48 @@
             margin-top: 3rem;
         }
 
+        /* 섹션 카드 스타일 */
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-card-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .section-card-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #333;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .section-card-header p {
+            font-size: 0.95rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .section-card-body {
+            padding: 2rem;
+        }
+
+        .section-card-footer {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 1.5rem 2rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .section-card-footer .button-group {
+            margin-top: 0;
+        }
+
         .btn {
             padding: 1rem 2rem;
             border: none;
@@ -801,50 +843,63 @@
             <div class="content-area">
                 <!-- 1단계: 설정 -->
                 <div class="step-content active" data-step="1">
-                    <h2 class="content-title">영상 비율 선택</h2>
-                    <p class="content-description">소셜미디어 비율을 선택하고 시작해주세요</p>
+                    <div class="section-card">
+                        <!-- 상단: 타이틀 -->
+                        <div class="section-card-header">
+                            <h3>영상 설정</h3>
+                            <p>스타일과 비율을 선택하고 시작하세요.</p>
+                        </div>
 
-                    <div class="options-grid" id="ratioOptions">
-                        <div class="option-card" onclick="selectRatio('16:9', this)">
-                            <div class="option-icon">📺</div>
-                            <div class="option-title">16:9</div>
-                            <div class="option-description">유튜브, 데스크톱</div>
-                        </div>
-                        <div class="option-card" onclick="selectRatio('1:1', this)">
-                            <div class="option-icon">□</div>
-                            <div class="option-title">1:1</div>
-                            <div class="option-description">인스타그램, 포스트</div>
-                        </div>
-                        <div class="option-card" onclick="selectRatio('3:4', this)">
-                            <div class="option-icon">📱</div>
-                            <div class="option-title">3:4</div>
-                            <div class="option-description">인스타그램, 릴스 (BETA)</div>
-                        </div>
-                        <div class="option-card" onclick="selectRatio('9:16', this)">
-                            <div class="option-icon">📲</div>
-                            <div class="option-title">9:16</div>
-                            <div class="option-description">모바일, 릴스, 쇼츠</div>
-                        </div>
-                    </div>
+                        <!-- 중단: 옵션 선택 -->
+                        <div class="section-card-body">
+                            <div class="form-group">
+                                <label class="form-label">영상 비율 선택</label>
+                                <div class="options-grid" id="ratioOptions">
+                                    <div class="option-card" onclick="selectRatio('16:9', this)">
+                                        <div class="option-icon">📺</div>
+                                        <div class="option-title">16:9</div>
+                                        <div class="option-description">유튜브, 데스크톱</div>
+                                    </div>
+                                    <div class="option-card" onclick="selectRatio('1:1', this)">
+                                        <div class="option-icon">□</div>
+                                        <div class="option-title">1:1</div>
+                                        <div class="option-description">인스타그램, 포스트</div>
+                                    </div>
+                                    <div class="option-card" onclick="selectRatio('3:4', this)">
+                                        <div class="option-icon">📱</div>
+                                        <div class="option-title">3:4</div>
+                                        <div class="option-description">인스타그램, 릴스 (BETA)</div>
+                                    </div>
+                                    <div class="option-card" onclick="selectRatio('9:16', this)">
+                                        <div class="option-icon">📲</div>
+                                        <div class="option-title">9:16</div>
+                                        <div class="option-description">모바일, 릴스, 쇼츠</div>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <div class="form-group">
-                        <label class="form-label">스타일 선택</label>
-                        <div class="options-grid" id="styleOptions" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
-                            <div class="option-card" onclick="selectStyle('minimalist', this)">
-                                <div class="option-title">미니멀리스트</div>
-                            </div>
-                            <div class="option-card" onclick="selectStyle('modern', this)">
-                                <div class="option-title">모던 스타일</div>
-                            </div>
-                            <div class="option-card" onclick="selectStyle('vintage', this)">
-                                <div class="option-title">빈티지</div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">스타일 선택</label>
+                                <div class="options-grid" id="styleOptions" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: 0;">
+                                    <div class="option-card" onclick="selectStyle('minimalist', this)">
+                                        <div class="option-title">미니멀리스트</div>
+                                    </div>
+                                    <div class="option-card" onclick="selectStyle('modern', this)">
+                                        <div class="option-title">모던 스타일</div>
+                                    </div>
+                                    <div class="option-card" onclick="selectStyle('vintage', this)">
+                                        <div class="option-title">빈티지</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="button-group">
-                        <button class="btn btn-secondary" onclick="showProjectList()">← 대시보드</button>
-                        <button class="btn btn-primary" onclick="nextStep()">다음 단계 →</button>
+                        <!-- 하단: 버튼 -->
+                        <div class="section-card-footer">
+                            <div class="button-group">
+                                <button class="btn btn-primary" onclick="nextStep()">다음 단계 →</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
