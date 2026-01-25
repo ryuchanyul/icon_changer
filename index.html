@@ -15,22 +15,22 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 2rem;
+        }
+
+        /* 헤더 - 전체 너비 */
+        .header {
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-        }
-
-        .header {
-            background: white;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-            width: 100%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            padding: 2rem;
         }
 
         .header-container {
@@ -539,7 +539,7 @@
                 grid-template-columns: 1fr;
             }
 
-            body {
+            .container {
                 padding: 1rem;
             }
 
@@ -614,35 +614,36 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 헤더 -->
-        <div class="header">
-            <div class="header-container">
-                <!-- 왼쪽: 로고 -->
-                <div class="header-left">
-                    <h1>🍌 Bbanana.ai</h1>
-                </div>
+    <!-- 헤더 - 전체 너비 -->
+    <div class="header">
+        <div class="header-container">
+            <!-- 왼쪽: 로고 -->
+            <div class="header-left">
+                <h1>🍌 Bbanana.ai</h1>
+            </div>
 
-                <!-- 가운데: 메뉴 -->
-                <div class="header-center">
-                    <nav class="menu-nav">
-                        <a href="#" class="active">🤖 AI 설정</a>
-                        <a href="#">📱 AI 샘플즈</a>
-                        <a href="#">💬 AI 자유톡</a>
-                        <a href="#">📋 AI 보드</a>
-                        <a href="#">✍️ AI 랜드카피</a>
-                        <a href="#">🎬 크레에이터</a>
-                    </nav>
-                </div>
+            <!-- 가운데: 메뉴 -->
+            <div class="header-center">
+                <nav class="menu-nav">
+                    <a href="#" class="active">🤖 AI 설정</a>
+                    <a href="#">📱 AI 샘플즈</a>
+                    <a href="#">💬 AI 자유톡</a>
+                    <a href="#">📋 AI 보드</a>
+                    <a href="#">✍️ AI 랜드카피</a>
+                    <a href="#">🎬 크레에이터</a>
+                </nav>
+            </div>
 
-                <!-- 오른쪽: 크레딧, 로그아웃 -->
-                <div class="header-right">
-                    <button class="login-btn" onclick="alert('크레딧 페이지')">💰 크레딧</button>
-                    <button class="login-btn" onclick="alert('로그아웃')">로그아웃</button>
-                </div>
+            <!-- 오른쪽: 크레딧, 로그아웃 -->
+            <div class="header-right">
+                <button class="login-btn" onclick="alert('크레딧 페이지')">💰 크레딧</button>
+                <button class="login-btn" onclick="alert('로그아웃')">로그아웃</button>
             </div>
         </div>
+    </div>
 
+    <!-- 메인 컨테이너 -->
+    <div class="container">
         <!-- 단계별 프로세스 -->
         <div class="process-steps">
             <div class="step-item active" onclick="goToStep(1)">
