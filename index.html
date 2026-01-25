@@ -673,7 +673,7 @@
                         </li>
                     </ul>
 
-                    <button class="start-button" onclick="alert('준비 중입니다!')">시작하기</button>
+                    <button class="start-button" onclick="window.location.href='channelcreationmanager.php'">시작하기</button>
                 </div>
             </div>
 
@@ -718,7 +718,7 @@
                         </li>
                     </ul>
 
-                    <button class="start-button" onclick="alert('준비 중입니다!')">시작하기</button>
+                    <button class="start-button" onclick="window.location.href='channelcreationmanager.php'">시작하기</button>
                 </div>
             </div>
 
@@ -763,7 +763,7 @@
                         </li>
                     </ul>
 
-                    <button class="start-button" onclick="alert('준비 중입니다!')">시작하기</button>
+                    <button class="start-button" onclick="window.location.href='channelcreationmanager.php'">시작하기</button>
                 </div>
             </div>
 
@@ -808,7 +808,7 @@
                         </li>
                     </ul>
 
-                    <button class="start-button" onclick="alert('준비 중입니다!')">시작하기</button>
+                    <button class="start-button" onclick="window.location.href='channelcreationmanager.php'">시작하기</button>
                 </div>
             </div>
         </div>
@@ -839,14 +839,13 @@
             console.log('Step ' + stepNumber + ' activated');
         }
 
-        // 카드 클릭 시 다음 단계로 이동
+        // 카드 클릭 시 채널 생성 페이지로 이동
         document.addEventListener('DOMContentLoaded', function() {
             const buttons = document.querySelectorAll('.start-button');
             buttons.forEach(button => {
                 button.addEventListener('click', function(e) {
-                    // 기본 alert 제거하고 다음 단계로 이동
-                    e.preventDefault();
-                    goToStep(2); // 2단계로 이동
+                    // channelcreationmanager.php로 이동
+                    window.location.href = 'channelcreationmanager.php';
                 });
             });
         });
