@@ -27,12 +27,78 @@
             margin-bottom: 2rem;
         }
 
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
         .header h1 {
-            color: white;
-            font-size: 2rem;
+            color: #6f2dff;
+            font-size: 1.8rem;
             font-weight: 700;
-            padding-bottom: 1rem;
-            border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+            margin: 0;
+        }
+
+        .menu-nav {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .menu-nav a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-nav a:hover {
+            color: #6f2dff;
+            background: rgba(111, 45, 255, 0.1);
+        }
+
+        .menu-nav a.active {
+            color: #6f2dff;
+            background: rgba(111, 45, 255, 0.15);
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .login-btn {
+            padding: 0.6rem 1.5rem;
+            background: linear-gradient(135deg, #6f2dff 0%, #5a1fd9 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(111, 45, 255, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(111, 45, 255, 0.4);
         }
 
         .grid {
@@ -357,6 +423,97 @@
                 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        /* 단계별 프로세스 */
+        .process-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(90deg, #e0e0e0 0%, #e0e0e0 100%);
+            z-index: 0;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 3px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #999;
+            font-size: 1rem;
+            box-shadow:
+                0 4px 8px rgba(0, 0, 0, 0.1),
+                inset 0 1px 2px rgba(255, 255, 255, 0.5);
+            transition: all 0.3s;
+        }
+
+        .step-item.active .step-circle {
+            background: linear-gradient(145deg, #6f2dff, #5a1fd9);
+            border-color: #6f2dff;
+            color: white;
+            box-shadow:
+                0 6px 15px rgba(111, 45, 255, 0.4),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 2px 4px rgba(150, 100, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .step-item.completed .step-circle {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            border-color: #4CAF50;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.85rem;
+            color: #999;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .step-item.active .step-label {
+            color: #6f2dff;
+        }
+
+        .step-item.completed .step-label {
+            color: #4CAF50;
+        }
+
+        .section-title-main {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
         /* 반응형 */
         @media (max-width: 768px) {
             .grid {
@@ -367,21 +524,112 @@
                 padding: 1rem;
             }
 
+            .header {
+                padding: 1rem;
+            }
+
             .header h1 {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
+            }
+
+            .menu-nav {
+                overflow-x: auto;
+                gap: 1rem;
+                padding-bottom: 0.5rem;
+            }
+
+            .menu-nav a {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
+                white-space: nowrap;
             }
 
             .card {
                 padding: 1.5rem;
+            }
+
+            .process-steps {
+                gap: 0.5rem;
+                overflow-x: auto;
+                padding: 1rem 0;
+            }
+
+            .process-steps::before {
+                left: 5%;
+                right: 5%;
+            }
+
+            .step-circle {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+
+            .step-label {
+                font-size: 0.75rem;
+            }
+
+            .section-title-main {
+                font-size: 1.3rem;
+            }
+
+            .login-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- 헤더 -->
         <div class="header">
-            <h1>유튜브 채널관리 매니저</h1>
+            <div class="header-top">
+                <h1>🎬 유튜브 채널관리 매니저</h1>
+                <div class="user-actions">
+                    <button class="login-btn" onclick="alert('로그인 기능 준비 중')">로그인</button>
+                </div>
+            </div>
+            <nav class="menu-nav">
+                <a href="#" class="active">AI 셋팅</a>
+                <a href="#">AI 샘플즈</a>
+                <a href="#">AI 자유톡</a>
+                <a href="#">AI 보드</a>
+                <a href="#">AI 랜드카피</a>
+                <a href="#">크레에이터</a>
+            </nav>
         </div>
+
+        <!-- 단계별 프로세스 -->
+        <div class="process-steps">
+            <div class="step-item active" onclick="goToStep(1)">
+                <div class="step-circle">1</div>
+                <div class="step-label">설정</div>
+            </div>
+            <div class="step-item" onclick="goToStep(2)">
+                <div class="step-circle">2</div>
+                <div class="step-label">대본 생성</div>
+            </div>
+            <div class="step-item" onclick="goToStep(3)">
+                <div class="step-circle">3</div>
+                <div class="step-label">음성 생성</div>
+            </div>
+            <div class="step-item" onclick="goToStep(4)">
+                <div class="step-circle">4</div>
+                <div class="step-label">이미지 생성</div>
+            </div>
+            <div class="step-item" onclick="goToStep(5)">
+                <div class="step-circle">5</div>
+                <div class="step-label">영상 생성</div>
+            </div>
+            <div class="step-item" onclick="goToStep(6)">
+                <div class="step-circle">6</div>
+                <div class="step-label">영상 편집기</div>
+            </div>
+        </div>
+
+        <!-- 섹션 제목 -->
+        <h2 class="section-title-main">채널 시작 도우미 선택</h2>
 
         <div class="grid">
             <!-- 카드 1 -->
@@ -565,5 +813,43 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // 단계 이동 함수
+        function goToStep(stepNumber) {
+            // 모든 단계 아이템 가져오기
+            const steps = document.querySelectorAll('.step-item');
+
+            // 모든 단계 초기화
+            steps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+
+                // 현재 단계보다 이전 단계는 완료 표시
+                if (index + 1 < stepNumber) {
+                    step.classList.add('completed');
+                }
+
+                // 현재 단계는 활성화
+                if (index + 1 === stepNumber) {
+                    step.classList.add('active');
+                }
+            });
+
+            // 여기에 각 단계별 콘텐츠 변경 로직 추가 가능
+            console.log('Step ' + stepNumber + ' activated');
+        }
+
+        // 카드 클릭 시 다음 단계로 이동
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.start-button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // 기본 alert 제거하고 다음 단계로 이동
+                    e.preventDefault();
+                    goToStep(2); // 2단계로 이동
+                });
+            });
+        });
+    </script>
 </body>
 </html>
