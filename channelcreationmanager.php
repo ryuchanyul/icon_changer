@@ -132,8 +132,8 @@
             content: '';
             position: absolute;
             top: 20px;
-            left: 10%;
-            right: 10%;
+            left: 0;
+            right: 0;
             height: 3px;
             background: linear-gradient(90deg, #e0e0e0 0%, #e0e0e0 100%);
             z-index: 0;
@@ -485,12 +485,12 @@
             <!-- 가운데: 메뉴 -->
             <div class="header-center">
                 <nav class="menu-nav">
-                    <a href="index.html">🤖 AI 설정</a>
+                    <a href="channelapi.php">🤖 API 설정</a>
                     <a href="#">📱 AI 샘플즈</a>
                     <a href="#">💬 AI 자유톡</a>
                     <a href="#">📋 AI 보드</a>
                     <a href="#">✍️ AI 랜드카피</a>
-                    <a href="#" class="active">🎬 크레에이터</a>
+                    <a href="index.html" class="active">🎬 크레에이터</a>
                 </nav>
             </div>
 
