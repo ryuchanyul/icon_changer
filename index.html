@@ -740,6 +740,261 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* 뷰 컨테이너 */
+        .view-container {
+            display: none;
+        }
+
+        .view-container.active {
+            display: block;
+        }
+
+        /* 프로세스 단계 */
+        .process-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #e0e0e0 0%, #e0e0e0 100%);
+            z-index: 0;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 3px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #999;
+            font-size: 1rem;
+            box-shadow:
+                0 4px 8px rgba(0, 0, 0, 0.1),
+                inset 0 1px 2px rgba(255, 255, 255, 0.5);
+            transition: all 0.3s;
+        }
+
+        .step-item.active .step-circle {
+            background: linear-gradient(145deg, #6f2dff, #5a1fd9);
+            border-color: #6f2dff;
+            color: white;
+            box-shadow:
+                0 6px 15px rgba(111, 45, 255, 0.4),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 2px 4px rgba(150, 100, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .step-item.completed .step-circle {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            border-color: #4CAF50;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.85rem;
+            color: #999;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .step-item.active .step-label {
+            color: #6f2dff;
+        }
+
+        .step-item.completed .step-label {
+            color: #4CAF50;
+        }
+
+        /* 워크플로우 콘텐츠 영역 */
+        .content-area {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.15),
+                0 6px 15px rgba(0, 0, 0, 0.1);
+            min-height: 500px;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .content-description {
+            font-size: 1.1rem;
+            color: #666;
+            text-align: center;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        /* 입력 폼 */
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: linear-gradient(145deg, #ffffff, #f9f9f9);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #6f2dff;
+            box-shadow: 0 0 0 3px rgba(111, 45, 255, 0.1);
+        }
+
+        /* 옵션 그리드 */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-card {
+            background: linear-gradient(145deg, #f9f9f9, #f0f0f0);
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-color: #6f2dff;
+        }
+
+        .option-card.selected {
+            background: linear-gradient(145deg, #6f2dff, #5a1fd9);
+            border-color: #6f2dff;
+            color: white;
+            box-shadow: 0 8px 20px rgba(111, 45, 255, 0.3);
+        }
+
+        .option-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .option-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* 버튼 그룹 */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(145deg, #6f2dff, #5a1fd9);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(111, 45, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(145deg, #e0e0e0, #d0d0d0);
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
         /* 반응형 */
         @media (max-width: 768px) {
             .grid {
@@ -763,6 +1018,14 @@
             .header-btn {
                 flex: 1;
                 justify-content: center;
+            }
+
+            .content-area {
+                padding: 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
             }
 
             .header-container {
@@ -866,24 +1129,26 @@
 
     <!-- 메인 컨테이너 -->
     <div class="container">
-        <!-- 페이지 헤더 -->
-        <div class="page-header">
-            <div class="page-header-left">
-                <h1>내 프로젝트</h1>
-                <p>영상 자동화 프로젝트를 관리하세요</p>
+        <!-- 프로젝트 목록 뷰 -->
+        <div id="projectListView" class="view-container active">
+            <!-- 페이지 헤더 -->
+            <div class="page-header">
+                <div class="page-header-left">
+                    <h1>내 프로젝트</h1>
+                    <p>영상 자동화 프로젝트를 관리하세요</p>
+                </div>
+                <div class="page-header-right">
+                    <button class="header-btn header-btn-settings" onclick="alert('설정')">
+                        ⚙️ 설정
+                    </button>
+                    <button class="header-btn header-btn-beta" onclick="alert('오토파일럿')">
+                        🏪 ✨ 오토파일럿
+                    </button>
+                    <button class="header-btn header-btn-new" onclick="createNewProject()">
+                        ➕ 새 프로젝트
+                    </button>
+                </div>
             </div>
-            <div class="page-header-right">
-                <button class="header-btn header-btn-settings" onclick="alert('설정')">
-                    ⚙️ 설정
-                </button>
-                <button class="header-btn header-btn-beta" onclick="alert('오픈베타릿')">
-                    🏪 ✨ 오픈베타릿
-                </button>
-                <button class="header-btn header-btn-new" onclick="createNewProject()">
-                    ➕ 새 프로젝트
-                </button>
-            </div>
-        </div>
 
         <!-- 프로젝트 그리드 -->
         <div class="grid">
@@ -960,24 +1225,195 @@
             </div>
         </div>
 
-        <!-- 하단 메시지 -->
-        <div class="footer-message">
-            모든 프로젝트를 불러왔습니다
+            <!-- 하단 메시지 -->
+            <div class="footer-message">
+                모든 프로젝트를 불러왔습니다
+            </div>
+        </div>
+
+        <!-- 워크플로우 뷰 -->
+        <div id="workflowView" class="view-container">
+            <!-- 단계별 프로세스 -->
+            <div class="process-steps">
+                <div class="step-item active" onclick="goToStep(1)">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">설정</div>
+                </div>
+                <div class="step-item" onclick="goToStep(2)">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">대본 생성</div>
+                </div>
+                <div class="step-item" onclick="goToStep(3)">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">음성 생성</div>
+                </div>
+                <div class="step-item" onclick="goToStep(4)">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">이미지 생성</div>
+                </div>
+                <div class="step-item" onclick="goToStep(5)">
+                    <div class="step-circle">5</div>
+                    <div class="step-label">영상 생성</div>
+                </div>
+                <div class="step-item" onclick="goToStep(6)">
+                    <div class="step-circle">6</div>
+                    <div class="step-label">영상 편집기</div>
+                </div>
+            </div>
+
+            <!-- 메인 콘텐츠 영역 -->
+            <div class="content-area">
+                <!-- 1단계: 설정 -->
+                <div class="step-content active" data-step="1">
+                    <h2 class="content-title">영상 비율 선택</h2>
+                    <p class="content-description">소셜미디어 비율을 선택하고 시작해주세요</p>
+
+                    <div class="options-grid">
+                        <div class="option-card" onclick="selectRatio('16:9', this)">
+                            <div class="option-icon">📺</div>
+                            <div class="option-title">16:9</div>
+                            <div class="option-description">유튜브, 데스크톱</div>
+                        </div>
+                        <div class="option-card" onclick="selectRatio('1:1', this)">
+                            <div class="option-icon">□</div>
+                            <div class="option-title">1:1</div>
+                            <div class="option-description">인스타그램, 포스트</div>
+                        </div>
+                        <div class="option-card" onclick="selectRatio('3:4', this)">
+                            <div class="option-icon">📱</div>
+                            <div class="option-title">3:4</div>
+                            <div class="option-description">인스타그램, 릴스 (BETA)</div>
+                        </div>
+                        <div class="option-card" onclick="selectRatio('9:16', this)">
+                            <div class="option-icon">📲</div>
+                            <div class="option-title">9:16</div>
+                            <div class="option-description">모바일, 릴스, 쇼츠</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">스타일 선택</label>
+                        <div class="options-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                            <div class="option-card" onclick="selectStyle('minimalist', this)">
+                                <div class="option-title">미니멀리스트</div>
+                            </div>
+                            <div class="option-card" onclick="selectStyle('modern', this)">
+                                <div class="option-title">모던 스타일</div>
+                            </div>
+                            <div class="option-card" onclick="selectStyle('vintage', this)">
+                                <div class="option-title">빈티지</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="showProjectList()">← 대시보드</button>
+                        <button class="btn btn-primary" onclick="nextStep()">다음 단계 →</button>
+                    </div>
+                </div>
+
+                <!-- 2단계: 대본 생성 -->
+                <div class="step-content" data-step="2">
+                    <h2 class="content-title">대본 생성</h2>
+                    <p class="content-description">AI가 자동으로 대본을 생성합니다</p>
+
+                    <div class="form-group">
+                        <label class="form-label">주제 입력</label>
+                        <input type="text" class="form-input" placeholder="영상의 주제를 입력하세요" id="scriptTopic">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">키워드</label>
+                        <input type="text" class="form-input" placeholder="관련 키워드를 입력하세요 (쉼표로 구분)" id="scriptKeywords">
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="prevStep()">← 이전</button>
+                        <button class="btn btn-primary" onclick="nextStep()">다음 단계 →</button>
+                    </div>
+                </div>
+
+                <!-- 3단계: 음성 생성 -->
+                <div class="step-content" data-step="3">
+                    <h2 class="content-title">음성 생성</h2>
+                    <p class="content-description">AI 보이스를 선택하고 음성을 생성하세요</p>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="prevStep()">← 이전</button>
+                        <button class="btn btn-primary" onclick="nextStep()">다음 단계 →</button>
+                    </div>
+                </div>
+
+                <!-- 4단계: 이미지 생성 -->
+                <div class="step-content" data-step="4">
+                    <h2 class="content-title">이미지 생성</h2>
+                    <p class="content-description">대본에 맞는 이미지를 AI가 생성합니다</p>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="prevStep()">← 이전</button>
+                        <button class="btn btn-primary" onclick="nextStep()">다음 단계 →</button>
+                    </div>
+                </div>
+
+                <!-- 5단계: 영상 생성 -->
+                <div class="step-content" data-step="5">
+                    <h2 class="content-title">영상 생성</h2>
+                    <p class="content-description">모든 요소를 합쳐 영상을 생성합니다</p>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="prevStep()">← 이전</button>
+                        <button class="btn btn-primary" onclick="nextStep()">다음 단계 →</button>
+                    </div>
+                </div>
+
+                <!-- 6단계: 영상 편집기 -->
+                <div class="step-content" data-step="6">
+                    <h2 class="content-title">영상 편집기</h2>
+                    <p class="content-description">생성된 영상을 미리보고 편집하세요</p>
+
+                    <div class="button-group">
+                        <button class="btn btn-secondary" onclick="prevStep()">← 이전</button>
+                        <button class="btn btn-primary" onclick="showProjectList()">프로젝트 목록으로</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        let currentStep = 1;
+        let formData = {
+            ratio: '',
+            style: ''
+        };
+
+        // 뷰 전환 함수
+        function showProjectList() {
+            document.getElementById('projectListView').classList.add('active');
+            document.getElementById('workflowView').classList.remove('active');
+            // 워크플로우 초기화
+            currentStep = 1;
+            goToStep(1);
+        }
+
+        function showWorkflow() {
+            document.getElementById('projectListView').classList.remove('active');
+            document.getElementById('workflowView').classList.add('active');
+            // 첫 단계로 초기화
+            currentStep = 1;
+            goToStep(1);
+        }
+
         // 새 프로젝트 생성
         function createNewProject() {
-            if (confirm('새로운 영상 프로젝트를 시작하시겠습니까?')) {
-                window.location.href = 'channelcreationmanager.php';
-            }
+            showWorkflow();
         }
 
         // 프로젝트 편집
         function editProject(projectId) {
             console.log('프로젝트 편집:', projectId);
-            window.location.href = 'channelcreationmanager.php?project=' + projectId;
+            showWorkflow();
+            // 프로젝트 데이터 로드 (추후 구현)
         }
 
         // 프로젝트 삭제
@@ -985,7 +1421,6 @@
             event.stopPropagation(); // 부모 클릭 이벤트 방지
 
             if (confirm('정말로 이 프로젝트를 삭제하시겠습니까?\n삭제된 프로젝트는 복구할 수 없습니다.')) {
-                // 실제 환경에서는 서버에 삭제 요청을 보내야 합니다
                 alert('프로젝트 ' + projectId + '가 삭제되었습니다.');
 
                 // 임시로 카드를 페이드아웃하고 제거
@@ -1000,12 +1435,63 @@
             }
         }
 
-        // 페이지 로드 시 프로젝트 목록 로드 (추후 구현)
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('프로젝트 목록 페이지 로드됨');
+        // 워크플로우 - 단계 이동
+        function goToStep(stepNumber) {
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+            });
 
-            // 저장된 프로젝트 목록을 로드하는 로직 추가 가능
-            // localStorage 또는 서버 API에서 프로젝트 데이터 가져오기
+            document.querySelector(`[data-step="${stepNumber}"]`).classList.add('active');
+
+            const steps = document.querySelectorAll('.step-item');
+            steps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+
+                if (index + 1 < stepNumber) {
+                    step.classList.add('completed');
+                }
+
+                if (index + 1 === stepNumber) {
+                    step.classList.add('active');
+                }
+            });
+
+            currentStep = stepNumber;
+        }
+
+        function nextStep() {
+            if (currentStep < 6) {
+                goToStep(currentStep + 1);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                goToStep(currentStep - 1);
+            }
+        }
+
+        // 옵션 선택 함수들
+        function selectRatio(ratio, element) {
+            document.querySelectorAll('[data-step="1"] .options-grid:first-child .option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            formData.ratio = ratio;
+        }
+
+        function selectStyle(style, element) {
+            const parent = element.closest('.options-grid');
+            parent.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            formData.style = style;
+        }
+
+        // 페이지 로드 시
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('프로젝트 관리 페이지 로드됨');
         });
     </script>
 </body>
