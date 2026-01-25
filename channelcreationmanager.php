@@ -438,18 +438,21 @@
         <!-- 헤더 -->
         <div class="header">
             <div class="header-top">
-                <h1>🎬 채널 생성 매니저</h1>
+                <h1>🍌 Bbanana.ai</h1>
                 <div class="user-actions">
-                    <button class="login-btn" onclick="window.location.href='index.html'">메인으로</button>
+                    <button class="login-btn" onclick="alert('고객지원 페이지')">🏠 고객지원</button>
+                    <button class="login-btn" onclick="alert('크레딧 페이지')">💰 크레딧</button>
+                    <button class="login-btn" onclick="window.location.href='index.html'">◀ 메인</button>
+                    <button class="login-btn" onclick="alert('로그인 기능 준비 중')">👤</button>
                 </div>
             </div>
             <nav class="menu-nav">
-                <a href="index.html">AI 셋팅</a>
-                <a href="#" class="active">채널 생성</a>
-                <a href="#">AI 자유톡</a>
-                <a href="#">AI 보드</a>
-                <a href="#">AI 랜드카피</a>
-                <a href="#">크레에이터</a>
+                <a href="index.html">🤖 AI 설정</a>
+                <a href="#">📱 AI 샘플즈</a>
+                <a href="#">💬 AI 자유톡</a>
+                <a href="#">📋 AI 보드</a>
+                <a href="#">✍️ AI 랜드카피</a>
+                <a href="#" class="active">🎬 크레에이터</a>
             </nav>
         </div>
 
