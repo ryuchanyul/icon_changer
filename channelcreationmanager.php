@@ -26,17 +26,26 @@
         /* 헤더 */
         .header {
             background: white;
-            border-radius: 20px;
-            padding: 1rem 2rem;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .header-top {
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            gap: 2rem;
+        }
+
+        .header-left {
+            flex-shrink: 0;
         }
 
         .header h1 {
@@ -44,14 +53,19 @@
             font-size: 1.8rem;
             font-weight: 700;
             margin: 0;
+            white-space: nowrap;
+        }
+
+        .header-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
         }
 
         .menu-nav {
             display: flex;
             gap: 2rem;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 2px solid #f0f0f0;
+            align-items: center;
         }
 
         .menu-nav a {
@@ -75,6 +89,13 @@
             background: rgba(111, 45, 255, 0.15);
         }
 
+        .header-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
         .user-actions {
             display: flex;
             gap: 1rem;
@@ -82,7 +103,7 @@
         }
 
         .login-btn {
-            padding: 0.6rem 1.5rem;
+            padding: 0.6rem 1.2rem;
             background: linear-gradient(135deg, #6f2dff 0%, #5a1fd9 100%);
             color: white;
             border: none;
@@ -91,6 +112,8 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 4px 10px rgba(111, 45, 255, 0.3);
+            white-space: nowrap;
+            font-size: 0.9rem;
         }
 
         .login-btn:hover {
@@ -389,18 +412,38 @@
                 padding: 1rem;
             }
 
-            .header {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
                 padding: 1rem;
+            }
+
+            .header-left,
+            .header-center,
+            .header-right {
+                width: 100%;
+                justify-content: center;
             }
 
             .header h1 {
                 font-size: 1.3rem;
+                text-align: center;
             }
 
             .menu-nav {
-                overflow-x: auto;
-                gap: 1rem;
-                padding-bottom: 0.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .menu-nav a {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
+                white-space: nowrap;
+            }
+
+            .header-right {
+                justify-content: center;
             }
 
             .content-area {
@@ -437,23 +480,31 @@
     <div class="container">
         <!-- 헤더 -->
         <div class="header">
-            <div class="header-top">
-                <h1>🍌 Bbanana.ai</h1>
-                <div class="user-actions">
-                    <button class="login-btn" onclick="alert('고객지원 페이지')">🏠 고객지원</button>
+            <div class="header-container">
+                <!-- 왼쪽: 로고 -->
+                <div class="header-left">
+                    <h1>🍌 Bbanana.ai</h1>
+                </div>
+
+                <!-- 가운데: 메뉴 -->
+                <div class="header-center">
+                    <nav class="menu-nav">
+                        <a href="index.html">🤖 AI 설정</a>
+                        <a href="#">📱 AI 샘플즈</a>
+                        <a href="#">💬 AI 자유톡</a>
+                        <a href="#">📋 AI 보드</a>
+                        <a href="#">✍️ AI 랜드카피</a>
+                        <a href="#" class="active">🎬 크레에이터</a>
+                    </nav>
+                </div>
+
+                <!-- 오른쪽: 크레딧, 메인, 로그아웃 -->
+                <div class="header-right">
                     <button class="login-btn" onclick="alert('크레딧 페이지')">💰 크레딧</button>
                     <button class="login-btn" onclick="window.location.href='index.html'">◀ 메인</button>
-                    <button class="login-btn" onclick="alert('로그인 기능 준비 중')">👤</button>
+                    <button class="login-btn" onclick="alert('로그아웃')">로그아웃</button>
                 </div>
             </div>
-            <nav class="menu-nav">
-                <a href="index.html">🤖 AI 설정</a>
-                <a href="#">📱 AI 샘플즈</a>
-                <a href="#">💬 AI 자유톡</a>
-                <a href="#">📋 AI 보드</a>
-                <a href="#">✍️ AI 랜드카피</a>
-                <a href="#" class="active">🎬 크레에이터</a>
-            </nav>
         </div>
 
         <!-- 단계별 프로세스 -->
