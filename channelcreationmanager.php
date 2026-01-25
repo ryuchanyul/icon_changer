@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>채널 생성 매니저 - 유튜브 채널관리</title>
+    <title>채널 생성 매니저 - Bbanana.ai</title>
     <style>
         * {
             margin: 0;
@@ -15,19 +15,12 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 2rem;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* 헤더 */
+        /* 헤더 - 전체 너비 */
         .header {
             background: white;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
             width: 100%;
             position: sticky;
             top: 0;
@@ -54,6 +47,7 @@
             font-weight: 700;
             margin: 0;
             white-space: nowrap;
+            cursor: pointer;
         }
 
         .header-center {
@@ -96,12 +90,6 @@
             flex-shrink: 0;
         }
 
-        .user-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
         .login-btn {
             padding: 0.6rem 1.2rem;
             background: linear-gradient(135deg, #6f2dff 0%, #5a1fd9 100%);
@@ -119,6 +107,13 @@
         .login-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(111, 45, 255, 0.4);
+        }
+
+        /* 컨테이너 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
         /* 단계별 프로세스 */
@@ -408,10 +403,6 @@
 
         /* 반응형 */
         @media (max-width: 768px) {
-            body {
-                padding: 1rem;
-            }
-
             .header-container {
                 flex-direction: column;
                 gap: 1rem;
@@ -446,6 +437,10 @@
                 justify-content: center;
             }
 
+            .container {
+                padding: 1rem;
+            }
+
             .content-area {
                 padding: 1.5rem;
             }
@@ -477,36 +472,36 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 헤더 -->
-        <div class="header">
-            <div class="header-container">
-                <!-- 왼쪽: 로고 -->
-                <div class="header-left">
-                    <h1>🍌 Bbanana.ai</h1>
-                </div>
+    <!-- 헤더 - 전체 너비 -->
+    <div class="header">
+        <div class="header-container">
+            <!-- 왼쪽: 로고 -->
+            <div class="header-left">
+                <h1 onclick="window.location.href='index.html'">🍌 Bbanana.ai</h1>
+            </div>
 
-                <!-- 가운데: 메뉴 -->
-                <div class="header-center">
-                    <nav class="menu-nav">
-                        <a href="index.html">🤖 AI 설정</a>
-                        <a href="#">📱 AI 샘플즈</a>
-                        <a href="#">💬 AI 자유톡</a>
-                        <a href="#">📋 AI 보드</a>
-                        <a href="#">✍️ AI 랜드카피</a>
-                        <a href="#" class="active">🎬 크레에이터</a>
-                    </nav>
-                </div>
+            <!-- 가운데: 메뉴 -->
+            <div class="header-center">
+                <nav class="menu-nav">
+                    <a href="index.html">🤖 AI 설정</a>
+                    <a href="#">📱 AI 샘플즈</a>
+                    <a href="#">💬 AI 자유톡</a>
+                    <a href="#">📋 AI 보드</a>
+                    <a href="#">✍️ AI 랜드카피</a>
+                    <a href="#" class="active">🎬 크레에이터</a>
+                </nav>
+            </div>
 
-                <!-- 오른쪽: 크레딧, 메인, 로그아웃 -->
-                <div class="header-right">
-                    <button class="login-btn" onclick="alert('크레딧 페이지')">💰 크레딧</button>
-                    <button class="login-btn" onclick="window.location.href='index.html'">◀ 메인</button>
-                    <button class="login-btn" onclick="alert('로그아웃')">로그아웃</button>
-                </div>
+            <!-- 오른쪽: 크레딧, 로그아웃 -->
+            <div class="header-right">
+                <button class="login-btn" onclick="alert('크레딧 페이지')">💰 크레딧</button>
+                <button class="login-btn" onclick="alert('로그아웃')">로그아웃</button>
             </div>
         </div>
+    </div>
 
+    <!-- 메인 컨테이너 -->
+    <div class="container">
         <!-- 단계별 프로세스 -->
         <div class="process-steps">
             <div class="step-item active" onclick="goToStep(1)">
@@ -751,15 +746,12 @@
 
         // 단계 이동 함수
         function goToStep(stepNumber) {
-            // 현재 단계 숨기기
             document.querySelectorAll('.step-content').forEach(content => {
                 content.classList.remove('active');
             });
 
-            // 새 단계 표시
             document.querySelector(`[data-step="${stepNumber}"]`).classList.add('active');
 
-            // 단계 표시 업데이트
             const steps = document.querySelectorAll('.step-item');
             steps.forEach((step, index) => {
                 step.classList.remove('active', 'completed');
@@ -788,29 +780,22 @@
             }
         }
 
-        // 비율 선택
         function selectRatio(ratio, element) {
-            document.querySelectorAll('.options-grid .option-card').forEach(card => {
-                if (card.parentElement === element.parentElement) {
-                    card.classList.remove('selected');
-                }
+            document.querySelectorAll('[data-step="1"] .options-grid:first-child .option-card').forEach(card => {
+                card.classList.remove('selected');
             });
             element.classList.add('selected');
             formData.ratio = ratio;
         }
 
-        // 스타일 선택
         function selectStyle(style, element) {
-            document.querySelectorAll('.options-grid .option-card').forEach(card => {
-                if (card.parentElement === element.parentElement) {
-                    card.classList.remove('selected');
-                }
+            document.querySelectorAll('[data-step="1"] .form-group .option-card').forEach(card => {
+                card.classList.remove('selected');
             });
             element.classList.add('selected');
             formData.style = style;
         }
 
-        // 대본 스타일 선택
         function selectScriptStyle(style, element) {
             document.querySelectorAll('[data-step="2"] .option-card').forEach(card => {
                 card.classList.remove('selected');
@@ -819,7 +804,6 @@
             formData.scriptStyle = style;
         }
 
-        // 음성 선택
         function selectVoice(voice, element) {
             document.querySelectorAll('[data-step="3"] .option-card').forEach(card => {
                 card.classList.remove('selected');
@@ -828,7 +812,6 @@
             formData.voice = voice;
         }
 
-        // 이미지 스타일 선택
         function selectImageStyle(style, element) {
             document.querySelectorAll('[data-step="4"] .option-card').forEach(card => {
                 card.classList.remove('selected');
@@ -837,7 +820,6 @@
             formData.imageStyle = style;
         }
 
-        // 대본 생성
         function generateScript() {
             const topic = document.getElementById('scriptTopic').value;
             const keywords = document.getElementById('scriptKeywords').value;
@@ -854,12 +836,10 @@
             }, 1500);
         }
 
-        // 영상 다운로드
         function downloadVideo() {
             alert('영상 다운로드를 시작합니다...');
         }
 
-        // 편집기 열기
         function openEditor() {
             alert('영상 편집기를 여는 중...');
         }
