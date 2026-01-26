@@ -56,20 +56,25 @@ $model = "gemini-2.0-flash";
 $url   = "https://generativelanguage.googleapis.com/v1beta/models/" . $model . ":generateContent?key=" . urlencode($apiKey);
 
 /* Prompt */
-$prompt  = "You are a YouTube channel description writing expert.\n";
-$prompt .= "Generate 2 unique and compelling YouTube channel descriptions.\n\n";
+$prompt  = "You are a YouTube channel description and keyword expert.\n";
+$prompt .= "Generate 2 unique channel descriptions AND 10 relevant hashtag keywords.\n\n";
 $prompt .= "YouTube Channel Name: " . $channelName . "\n";
 $prompt .= "YouTube Handle: @" . $handleName . "\n";
 $prompt .= "User reference notes: " . $userInput . "\n\n";
-$prompt .= "Rules:\n";
+$prompt .= "Description Rules:\n";
 $prompt .= "- Each description must be 2-4 sentences.\n";
 $prompt .= "- Must be under 1000 characters.\n";
 $prompt .= "- Should clearly convey the channel's purpose and value to viewers.\n";
 $prompt .= "- Should include relevant keywords for YouTube SEO.\n";
 $prompt .= "- Tone should match the channel name's style.\n";
 $prompt .= "- Write in the same language as the channel name.\n\n";
+$prompt .= "Keyword Rules:\n";
+$prompt .= "- Generate 10 hashtag keywords relevant to the channel.\n";
+$prompt .= "- Each keyword must start with # symbol.\n";
+$prompt .= "- Keywords should be in the same language as the channel name.\n";
+$prompt .= "- Mix broad and niche keywords for SEO.\n\n";
 $prompt .= "Return ONLY valid JSON. No markdown, no explanation.\n";
-$prompt .= 'Schema: {"names":["desc1","desc2"]}';
+$prompt .= 'Schema: {"names":["desc1","desc2"],"keywords":["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7","#tag8","#tag9","#tag10"]}';
 
 /* Payload */
 $postData = [
@@ -177,9 +182,25 @@ if (empty($names)) {
     exit;
 }
 
+/* Keywords 처리 */
+$keywords = [];
+if (isset($decoded["keywords"]) && is_array($decoded["keywords"])) {
+    foreach ($decoded["keywords"] as $kw) {
+        if (is_array($kw)) {
+            $kw = implode(' ', array_map('strval', $kw));
+        }
+        if (!is_string($kw)) {
+            $kw = strval($kw);
+        }
+        $kw = trim($kw);
+        if ($kw !== '') $keywords[] = $kw;
+    }
+}
+$keywords = array_slice($keywords, 0, 10);
+
 /* Success */
 ob_end_clean();
-echo json_encode(["ok"=>true,"names"=>$names], JSON_UNESCAPED_UNICODE);
+echo json_encode(["ok"=>true,"names"=>$names,"keywords"=>$keywords], JSON_UNESCAPED_UNICODE);
 exit;
 
 } catch (Throwable $e) {
