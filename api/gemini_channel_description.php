@@ -57,7 +57,7 @@ $url   = "https://generativelanguage.googleapis.com/v1beta/models/" . $model . "
 
 /* Prompt */
 $prompt  = "You are a YouTube channel description writing expert.\n";
-$prompt .= "Generate 5 unique and compelling YouTube channel descriptions.\n\n";
+$prompt .= "Generate 2 unique and compelling YouTube channel descriptions.\n\n";
 $prompt .= "YouTube Channel Name: " . $channelName . "\n";
 $prompt .= "YouTube Handle: @" . $handleName . "\n";
 $prompt .= "User reference notes: " . $userInput . "\n\n";
@@ -69,7 +69,7 @@ $prompt .= "- Should include relevant keywords for YouTube SEO.\n";
 $prompt .= "- Tone should match the channel name's style.\n";
 $prompt .= "- Write in the same language as the channel name.\n\n";
 $prompt .= "Return ONLY valid JSON. No markdown, no explanation.\n";
-$prompt .= 'Schema: {"names":["desc1","desc2","desc3","desc4","desc5"]}';
+$prompt .= 'Schema: {"names":["desc1","desc2"]}';
 
 /* Payload */
 $postData = [
@@ -165,7 +165,7 @@ foreach ($decoded["names"] as $v) {
     $v = trim($v);
     if ($v !== '') $names[] = $v;
 }
-$names = array_slice($names, 0, 5);
+$names = array_slice($names, 0, 2);
 
 if (empty($names)) {
     http_response_code(500);
