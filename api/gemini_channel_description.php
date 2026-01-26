@@ -148,6 +148,13 @@ $text = trim(preg_replace('/```json|```/i', '', $text));
 /* Decode */
 $decoded = json_decode($text, true);
 
+/* Gemini가 "names" 대신 "descriptions" 키를 쓸 수 있으므로 둘 다 허용 */
+if (is_array($decoded)) {
+    if (!isset($decoded["names"]) && isset($decoded["descriptions"])) {
+        $decoded["names"] = $decoded["descriptions"];
+    }
+}
+
 if (!is_array($decoded) || !isset($decoded["names"]) || !is_array($decoded["names"])) {
     http_response_code(500);
     echo json_encode([
