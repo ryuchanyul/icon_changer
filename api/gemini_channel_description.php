@@ -153,9 +153,15 @@ if (!is_array($decoded) || !isset($decoded["names"]) || !is_array($decoded["name
     exit;
 }
 
-/* Normalize */
+/* Normalize — 문자열이 아닌 요소 방어 */
 $names = [];
 foreach ($decoded["names"] as $v) {
+    if (is_array($v)) {
+        $v = implode(' ', array_map('strval', $v));
+    }
+    if (!is_string($v)) {
+        $v = strval($v);
+    }
     $v = trim($v);
     if ($v !== '') $names[] = $v;
 }
