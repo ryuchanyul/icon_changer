@@ -1,7 +1,25 @@
 <?php
 error_reporting(0);
 ini_set('display_errors', '0');
+ob_start();
 header('Content-Type: application/json; charset=utf-8');
+
+/* Fatal Error 캐치 — 스크립트 비정상 종료 시 JSON 반환 */
+register_shutdown_function(function () {
+    $err = error_get_last();
+    if ($err && in_array($err['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        ob_end_clean();
+        http_response_code(500);
+        echo json_encode([
+            "ok"    => false,
+            "error" => "PHP Fatal: {$err['message']}",
+            "file"  => basename($err['file']),
+            "line"  => $err['line']
+        ], JSON_UNESCAPED_UNICODE);
+    }
+});
+
+try {
 
 /* POST only */
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -28,35 +46,30 @@ if ($apiKey === "") {
     exit;
 }
 
-/* Params — 프론트에서 전달받는 값 */
+/* Params */
 $channelName = trim($body["channelName"] ?? "");
 $handleName  = trim($body["handleName"]  ?? "");
 $userInput   = trim($body["userInput"]   ?? "");
 
-/* Gemini — key를 URL 쿼리 파라미터로 전달 */
+/* Gemini */
 $model = "gemini-2.0-flash";
-$url   = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key=" . urlencode($apiKey);
+$url   = "https://generativelanguage.googleapis.com/v1beta/models/" . $model . ":generateContent?key=" . urlencode($apiKey);
 
-/* Prompt — 유튜브 채널설명 생성 */
-$prompt = <<<PROMPT
-You are a YouTube channel description writing expert.
-Generate 5 unique and compelling YouTube channel descriptions.
-
-YouTube Channel Name: {$channelName}
-YouTube Handle: @{$handleName}
-User reference notes: {$userInput}
-
-Rules:
-- Each description must be 2-4 sentences.
-- Must be under 1000 characters.
-- Should clearly convey the channel's purpose and value to viewers.
-- Should include relevant keywords for YouTube SEO.
-- Tone should match the channel name's style.
-- Write in the same language as the channel name.
-
-Return ONLY valid JSON. No markdown, no explanation.
-Schema: {"names":["desc1","desc2","desc3","desc4","desc5"]}
-PROMPT;
+/* Prompt */
+$prompt  = "You are a YouTube channel description writing expert.\n";
+$prompt .= "Generate 5 unique and compelling YouTube channel descriptions.\n\n";
+$prompt .= "YouTube Channel Name: " . $channelName . "\n";
+$prompt .= "YouTube Handle: @" . $handleName . "\n";
+$prompt .= "User reference notes: " . $userInput . "\n\n";
+$prompt .= "Rules:\n";
+$prompt .= "- Each description must be 2-4 sentences.\n";
+$prompt .= "- Must be under 1000 characters.\n";
+$prompt .= "- Should clearly convey the channel's purpose and value to viewers.\n";
+$prompt .= "- Should include relevant keywords for YouTube SEO.\n";
+$prompt .= "- Tone should match the channel name's style.\n";
+$prompt .= "- Write in the same language as the channel name.\n\n";
+$prompt .= "Return ONLY valid JSON. No markdown, no explanation.\n";
+$prompt .= 'Schema: {"names":["desc1","desc2","desc3","desc4","desc5"]}';
 
 /* Payload */
 $postData = [
@@ -76,9 +89,7 @@ $ch = curl_init($url);
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POST           => true,
-    CURLOPT_HTTPHEADER     => [
-        "Content-Type: application/json"
-    ],
+    CURLOPT_HTTPHEADER     => ["Content-Type: application/json"],
     CURLOPT_POSTFIELDS     => json_encode($postData, JSON_UNESCAPED_UNICODE),
     CURLOPT_TIMEOUT        => 30,
     CURLOPT_SSL_VERIFYPEER => true
@@ -99,7 +110,7 @@ if ($httpCode < 200 || $httpCode >= 300) {
     http_response_code(502);
     echo json_encode([
         "ok"    => false,
-        "error" => "Gemini HTTP {$httpCode}",
+        "error" => "Gemini HTTP " . $httpCode,
         "raw"   => json_decode($response, true) ?? $response
     ], JSON_UNESCAPED_UNICODE);
     exit;
@@ -109,13 +120,16 @@ if ($httpCode < 200 || $httpCode >= 300) {
 $respJson = json_decode($response, true);
 
 /* Debug log */
-file_put_contents(
+@file_put_contents(
     __DIR__ . '/gemini_description_debug.log',
     date('Y-m-d H:i:s') . "\n" . json_encode($respJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n\n",
     FILE_APPEND
 );
 
-$text = $respJson["candidates"][0]["content"]["parts"][0]["text"] ?? "";
+$text = "";
+if (isset($respJson["candidates"][0]["content"]["parts"][0]["text"])) {
+    $text = $respJson["candidates"][0]["content"]["parts"][0]["text"];
+}
 
 if (!$text) {
     http_response_code(500);
@@ -123,7 +137,7 @@ if (!$text) {
     exit;
 }
 
-/* Cleanup — markdown 코드블록 제거 */
+/* Cleanup */
 $text = trim(preg_replace('/```json|```/i', '', $text));
 
 /* Decode */
@@ -139,14 +153,13 @@ if (!is_array($decoded) || !isset($decoded["names"]) || !is_array($decoded["name
     exit;
 }
 
-/* Normalize — 빈 값 제거 후 최대 5개 */
-$names = array_slice(
-    array_values(array_filter(array_map('trim', $decoded["names"]), function($v) {
-        return $v !== '';
-    })),
-    0,
-    5
-);
+/* Normalize */
+$names = [];
+foreach ($decoded["names"] as $v) {
+    $v = trim($v);
+    if ($v !== '') $names[] = $v;
+}
+$names = array_slice($names, 0, 5);
 
 if (empty($names)) {
     http_response_code(500);
@@ -159,5 +172,18 @@ if (empty($names)) {
 }
 
 /* Success */
+ob_end_clean();
 echo json_encode(["ok"=>true,"names"=>$names], JSON_UNESCAPED_UNICODE);
 exit;
+
+} catch (Throwable $e) {
+    ob_end_clean();
+    http_response_code(500);
+    echo json_encode([
+        "ok"    => false,
+        "error" => "Exception: " . $e->getMessage(),
+        "file"  => basename($e->getFile()),
+        "line"  => $e->getLine()
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
+}
