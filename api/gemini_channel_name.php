@@ -44,12 +44,12 @@ $url   = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:gener
 
 /* Prompt */
 $prompt = <<<PROMPT
-You are a YouTube channel naming expert.
-Based on the following parameters, suggest 5 unique, creative, and memorable YouTube channel names.
+You are a creative channel naming expert.
+Based on the following parameters, suggest 5 unique, creative, and memorable channel names.
 
 Country: {$country}
 Language: {$lang}
-YouTube Category: {$ytCat}
+Category: {$ytCat}
 Topic: {$topic}
 Target Age Group: {$age}
 Style: {$style}

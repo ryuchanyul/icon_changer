@@ -36,15 +36,15 @@ $userInput   = trim($body["userInput"]   ?? "");
 $model = "gemini-2.0-flash";
 $url   = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key=" . urlencode($apiKey);
 
-/* Prompt — 유튜브 핸들 규칙 반영 */
+/* Prompt — 핸들 규칙 반영 */
 $prompt = <<<PROMPT
-You are a YouTube handle naming expert.
-Generate 5 unique YouTube handle name suggestions.
+You are a handle naming expert.
+Generate 5 unique handle name suggestions.
 
-YouTube Channel Name: {$channelName}
+Channel Name: {$channelName}
 User preferred handle (optional): {$userInput}
 
-YouTube Handle Rules (MUST follow ALL):
+Handle Rules (MUST follow ALL):
 - Must contain ONLY lowercase English letters (a-z), digits (0-9), underscores (_), or periods (.)
 - NO spaces, NO hyphens, NO special characters, NO uppercase letters
 - Length must be between 3 and 30 characters (excluding the @ prefix)

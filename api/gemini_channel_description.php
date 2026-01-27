@@ -56,16 +56,16 @@ $model = "gemini-2.0-flash";
 $url   = "https://generativelanguage.googleapis.com/v1beta/models/" . $model . ":generateContent?key=" . urlencode($apiKey);
 
 /* Prompt */
-$prompt  = "You are a YouTube channel description and keyword expert.\n";
+$prompt  = "You are a channel description and keyword expert.\n";
 $prompt .= "Generate 3 unique channel descriptions AND 10 relevant hashtag keywords.\n\n";
-$prompt .= "YouTube Channel Name: " . $channelName . "\n";
-$prompt .= "YouTube Handle: @" . $handleName . "\n";
+$prompt .= "Channel Name: " . $channelName . "\n";
+$prompt .= "Handle: @" . $handleName . "\n";
 $prompt .= "User reference notes: " . $userInput . "\n\n";
 $prompt .= "Description Rules:\n";
 $prompt .= "- Each description must be 2-4 sentences.\n";
 $prompt .= "- Must be under 1000 characters.\n";
 $prompt .= "- Should clearly convey the channel's purpose and value to viewers.\n";
-$prompt .= "- Should include relevant keywords for YouTube SEO.\n";
+$prompt .= "- Should include relevant keywords for SEO.\n";
 $prompt .= "- Tone should match the channel name's style.\n";
 $prompt .= "- Write in the same language as the channel name.\n\n";
 $prompt .= "Keyword Rules:\n";
