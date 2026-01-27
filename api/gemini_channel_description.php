@@ -150,73 +150,98 @@ $text = trim(preg_replace('/```json|```/i', '', $text));
 /* Decode */
 $decoded = json_decode($text, true);
 
-/* Gemini가 "names" 대신 "descriptions" 키를 쓸 수 있으므로 둘 다 허용 */
+/* Gemini 응답이 배열이면 첫 번째 요소 사용 */
+if (is_array($decoded) && isset($decoded[0]) && is_array($decoded[0])) {
+    $decoded = $decoded[0];
+}
+
+/* 유연한 파싱 — Gemini가 다양한 키를 사용할 수 있음 */
+$names = [];
+$translations = [];
+$keywords = [];
+
 if (is_array($decoded)) {
-    if (!isset($decoded["names"]) && isset($decoded["descriptions"])) {
-        $decoded["names"] = $decoded["descriptions"];
+
+    /* 1) descriptions/names 배열이 있는 경우 */
+    if (isset($decoded["names"]) && is_array($decoded["names"])) {
+        $names = $decoded["names"];
+    } elseif (isset($decoded["descriptions"]) && is_array($decoded["descriptions"])) {
+        $names = $decoded["descriptions"];
+    } else {
+        /* 2) desc1, desc2... 또는 번호 키로 된 경우 */
+        foreach ($decoded as $key => $val) {
+            if (is_string($val) && preg_match('/^desc/i', $key)) {
+                $names[] = $val;
+            }
+        }
+    }
+
+    /* translations 배열이 있는 경우 */
+    if (isset($decoded["translations"]) && is_array($decoded["translations"])) {
+        $translations = $decoded["translations"];
+    } else {
+        /* 한국어설명1, 한국어설명2... 키로 된 경우 */
+        foreach ($decoded as $key => $val) {
+            if (is_string($val) && preg_match('/^한국어/', $key)) {
+                $translations[] = $val;
+            }
+        }
+    }
+
+    /* keywords */
+    if (isset($decoded["keywords"]) && is_array($decoded["keywords"])) {
+        $keywords = $decoded["keywords"];
     }
 }
 
-if (!is_array($decoded) || !isset($decoded["names"]) || !is_array($decoded["names"])) {
+if (empty($names)) {
     http_response_code(500);
     echo json_encode([
         "ok"    => false,
-        "error" => "Failed to parse description JSON",
+        "error" => "No descriptions found in response",
         "text"  => $text
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 /* Normalize — 문자열이 아닌 요소 방어 */
-$names = [];
-foreach ($decoded["names"] as $v) {
-    if (is_array($v)) {
-        $v = implode(' ', array_map('strval', $v));
-    }
-    if (!is_string($v)) {
-        $v = strval($v);
-    }
+$cleanNames = [];
+foreach ($names as $v) {
+    if (is_array($v)) $v = implode(' ', array_map('strval', $v));
+    if (!is_string($v)) $v = strval($v);
     $v = trim($v);
-    if ($v !== '') $names[] = $v;
+    if ($v !== '') $cleanNames[] = $v;
 }
-$names = array_slice($names, 0, 2);
+$names = array_slice($cleanNames, 0, 2);
 
 if (empty($names)) {
     http_response_code(500);
     echo json_encode([
         "ok"    => false,
         "error" => "No valid descriptions generated",
-        "raw"   => $decoded["names"]
+        "raw"   => $decoded
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-/* Keywords 처리 */
-$keywords = [];
-if (isset($decoded["keywords"]) && is_array($decoded["keywords"])) {
-    foreach ($decoded["keywords"] as $kw) {
-        if (is_array($kw)) {
-            $kw = implode(' ', array_map('strval', $kw));
-        }
-        if (!is_string($kw)) {
-            $kw = strval($kw);
-        }
-        $kw = trim($kw);
-        if ($kw !== '') $keywords[] = $kw;
-    }
+/* Translations normalize */
+$cleanTranslations = [];
+foreach ($translations as $t) {
+    if (is_array($t)) $t = implode(' ', array_map('strval', $t));
+    if (!is_string($t)) $t = strval($t);
+    $cleanTranslations[] = trim($t);
 }
-$keywords = array_slice($keywords, 0, 10);
+$translations = array_slice($cleanTranslations, 0, count($names));
 
-/* Translations 처리 */
-$translations = [];
-if (isset($decoded["translations"]) && is_array($decoded["translations"])) {
-    foreach ($decoded["translations"] as $t) {
-        if (is_array($t)) $t = implode(' ', array_map('strval', $t));
-        if (!is_string($t)) $t = strval($t);
-        $translations[] = trim($t);
-    }
+/* Keywords normalize */
+$cleanKeywords = [];
+foreach ($keywords as $kw) {
+    if (is_array($kw)) $kw = implode(' ', array_map('strval', $kw));
+    if (!is_string($kw)) $kw = strval($kw);
+    $kw = trim($kw);
+    if ($kw !== '') $cleanKeywords[] = $kw;
 }
-$translations = array_slice($translations, 0, count($names));
+$keywords = array_slice($cleanKeywords, 0, 10);
 
 /* Success */
 ob_end_clean();
