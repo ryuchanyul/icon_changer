@@ -57,21 +57,21 @@ if (!in_array($type, ["icon", "art"])) {
 
 /* 프롬프트 생성 */
 if ($type === "icon") {
-    $prompt  = "Create a professional YouTube channel profile icon/logo. ";
-    $prompt .= "Channel name: " . $channelName . ". ";
-    $prompt .= "Channel description: " . $description . ". ";
+    $prompt  = "Create a professional profile icon/logo for a brand. ";
+    $prompt .= "Brand name: " . $channelName . ". ";
+    $prompt .= "Brand description: " . $description . ". ";
     $prompt .= "Style: Modern, clean, minimalist logo design. ";
     $prompt .= "The icon should be simple, recognizable, and work well at small sizes. ";
     $prompt .= "Use bold colors and clean shapes. No text in the image. ";
-    $prompt .= "Square format, suitable for a YouTube profile picture.";
+    $prompt .= "Square format, suitable for a profile picture.";
 } else {
-    $prompt  = "Create a professional YouTube channel banner/art. ";
-    $prompt .= "Channel name: " . $channelName . ". ";
-    $prompt .= "Channel description: " . $description . ". ";
+    $prompt  = "Create a professional wide banner image for a brand. ";
+    $prompt .= "Brand name: " . $channelName . ". ";
+    $prompt .= "Brand description: " . $description . ". ";
     $prompt .= "Style: Modern, cinematic, visually striking banner. ";
     $prompt .= "Wide landscape format (16:9 ratio). ";
-    $prompt .= "Professional quality, suitable for a YouTube channel header. ";
-    $prompt .= "Include subtle visual elements related to the channel theme. No text.";
+    $prompt .= "Professional quality, suitable for a website or social media header. ";
+    $prompt .= "Include subtle visual elements related to the brand theme. No text.";
 }
 
 /* Gemini 2.5 Flash Image API */
