@@ -74,14 +74,22 @@ if ($type === "icon") {
     $prompt .= "Include subtle visual elements related to the channel theme. No text.";
 }
 
-/* Imagen 3 API */
-$model = "imagen-3.0-generate-002";
-$url = "https://generativelanguage.googleapis.com/v1beta/models/" . $model . ":generateImages?key=" . urlencode($apiKey);
+/* Gemini 2.5 Flash Image API */
+$model = "gemini-2.5-flash-image";
+$url = "https://generativelanguage.googleapis.com/v1beta/models/" . $model . ":generateContent?key=" . urlencode($apiKey);
+
+$aspectRatio = ($type === "icon") ? "1:1" : "16:9";
 
 $postData = [
-    "prompt" => $prompt,
-    "config" => [
-        "numberOfImages" => 1
+    "contents" => [[
+        "role" => "user",
+        "parts" => [["text" => $prompt]]
+    ]],
+    "generationConfig" => [
+        "responseModalities" => ["IMAGE"],
+        "imageConfig" => [
+            "aspectRatio" => $aspectRatio
+        ]
     ]
 ];
 
@@ -117,7 +125,7 @@ if ($httpCode < 200 || $httpCode >= 300) {
     http_response_code(502);
     echo json_encode([
         "ok"    => false,
-        "error" => "Imagen HTTP " . $httpCode,
+        "error" => "Gemini Image HTTP " . $httpCode,
         "raw"   => json_decode($response, true) ?? $response
     ], JSON_UNESCAPED_UNICODE);
     exit;
