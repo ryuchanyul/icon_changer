@@ -57,7 +57,7 @@ $url   = "https://generativelanguage.googleapis.com/v1beta/models/" . $model . "
 
 /* Prompt */
 $prompt  = "You are a YouTube channel description and keyword expert.\n";
-$prompt .= "Generate 2 unique channel descriptions AND 10 relevant hashtag keywords.\n\n";
+$prompt .= "Generate 3 unique channel descriptions AND 10 relevant hashtag keywords.\n\n";
 $prompt .= "YouTube Channel Name: " . $channelName . "\n";
 $prompt .= "YouTube Handle: @" . $handleName . "\n";
 $prompt .= "User reference notes: " . $userInput . "\n\n";
@@ -76,7 +76,7 @@ $prompt .= "- Mix broad and niche keywords for SEO.\n\n";
 $prompt .= "Translation Rules:\n";
 $prompt .= "- Also provide a Korean translation for each description.\n\n";
 $prompt .= "Return ONLY valid JSON. No markdown, no explanation.\n";
-$prompt .= 'Schema: {"names":["desc1","desc2"],"translations":["한국어설명1","한국어설명2"],"keywords":["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7","#tag8","#tag9","#tag10"]}';
+$prompt .= 'Schema: {"names":["desc1","desc2","desc3"],"translations":["한국어설명1","한국어설명2","한국어설명3"],"keywords":["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7","#tag8","#tag9","#tag10"]}';
 
 /* Payload */
 $postData = [
@@ -244,7 +244,7 @@ foreach ($names as $v) {
     $v = trim($v);
     if ($v !== '') $cleanNames[] = $v;
 }
-$names = array_slice($cleanNames, 0, 2);
+$names = array_slice($cleanNames, 0, 3);
 
 if (empty($names)) {
     http_response_code(500);
