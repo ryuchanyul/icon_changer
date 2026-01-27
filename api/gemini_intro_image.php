@@ -35,41 +35,39 @@ if (!$apiKey) {
     exit;
 }
 
-// 인트로 이미지 프롬프트 생성
-$prompt = "Create a visually stunning YouTube channel intro image for a video opening sequence.\n";
-$prompt .= "Channel name: \"{$channelName}\"\n";
+// 인트로 이미지 프롬프트 생성 (스타일별 분기)
+$prompt = '';
 
-if ($handleName) {
-    $prompt .= "Handle: @{$handleName}\n";
-}
-if ($description) {
-    $prompt .= "Channel theme: {$description}\n";
-}
-if ($keywords) {
-    $prompt .= "Keywords: {$keywords}\n";
-}
-if ($country) {
-    $prompt .= "Target country: {$country}\n";
-}
-if ($imageStyle) {
-    $prompt .= "Image style: {$imageStyle}\n";
-}
+if ($imageStyle === '효과') {
+    // ── 효과: 추상 비주얼 인트로 ──
+    $prompt .= "Generate a cinematic YouTube intro image.\n";
+    $prompt .= "Style: abstract visual effects, glowing light trails, dynamic motion graphics, particle explosion, neon gradients.\n";
+    $prompt .= "Mood: energetic, futuristic, high-impact opening sequence.\n";
+    $prompt .= "Square format (1:1 aspect ratio), high resolution, ultra detailed.\n";
+    $prompt .= "Negative: no text, no human, no face, no letters, no watermark.\n";
 
-$prompt .= "\nDesign requirements:\n";
-$prompt .= "- Modern, cinematic intro image suitable for a YouTube video opening\n";
-$prompt .= "- Display the channel name \"{$channelName}\" prominently in the center\n";
-$prompt .= "- Use vibrant, eye-catching colors with gradient or dynamic background\n";
-$prompt .= "- Professional and polished design\n";
-$prompt .= "- Square format (1:1 aspect ratio)\n";
-$prompt .= "- Clean typography, no clutter\n";
-$prompt .= "- Suitable for video intro/outro overlay\n";
+} elseif ($imageStyle === '관광명소') {
+    // ── 관광명소: 국가별 랜덤 랜드마크 ──
+    $prompt .= "Generate a stunning cinematic photo of a random famous tourist landmark in {$country}.\n";
+    $prompt .= "Style: epic wide-angle landscape photography, golden hour lighting, vivid colors, travel documentary look.\n";
+    $prompt .= "Show the landmark as the hero subject with dramatic sky and atmosphere.\n";
+    $prompt .= "Square format (1:1 aspect ratio), high resolution, ultra detailed.\n";
+    $prompt .= "Negative: no text, no human, no face, no letters, no watermark, no person.\n";
 
-if ($imageStyle === '관광명소') {
-    $prompt .= "- Feature a famous landmark or tourist attraction from {$country}\n";
 } elseif ($imageStyle === '도시') {
-    $prompt .= "- Feature a cityscape or urban scenery from {$country}\n";
-} elseif ($imageStyle === '효과') {
-    $prompt .= "- Focus on abstract visual effects, light trails, and dynamic motion graphics\n";
+    // ── 도시: 국가별 랜덤 도시 풍경 ──
+    $prompt .= "Generate a stunning cinematic photo of a random famous city skyline or cityscape in {$country}.\n";
+    $prompt .= "Style: modern urban photography, dramatic lighting, aerial or street-level view, vibrant city lights.\n";
+    $prompt .= "Show iconic buildings, streets, or skyline with atmospheric mood.\n";
+    $prompt .= "Square format (1:1 aspect ratio), high resolution, ultra detailed.\n";
+    $prompt .= "Negative: no text, no human, no face, no letters, no watermark, no person.\n";
+
+} else {
+    // ── 기본 폴백 ──
+    $prompt .= "Generate a cinematic YouTube intro image.\n";
+    $prompt .= "Style: modern, eye-catching, professional.\n";
+    $prompt .= "Square format (1:1 aspect ratio), high resolution.\n";
+    $prompt .= "Negative: no text, no human, no face, no letters, no watermark.\n";
 }
 
 // Gemini API 호출
