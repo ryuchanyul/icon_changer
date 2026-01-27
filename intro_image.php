@@ -123,20 +123,69 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
         }
 
-        /* 안내 박스 */
-        .guide-box {
-            background: #f0f4ff;
-            border: 1px solid #d0d9ff;
+        /* 좌우 패널 레이아웃 */
+        .panels-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .left-panel,
+        .right-panel {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
             border-radius: 12px;
             padding: 1.25rem;
-            margin-bottom: 1.5rem;
+        }
+
+        .options-grid {
             font-size: 0.88rem;
             line-height: 1.8;
             color: #444;
         }
 
-        .guide-box strong {
+        .options-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .options-row img {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            font-weight: 600;
             color: #333;
+            white-space: nowrap;
+            min-width: 80px;
+        }
+
+        .form-select {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        }
+
+        @media (max-width: 900px) {
+            .panels-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* 이미지 생성 영역 */
@@ -297,15 +346,50 @@
                         <div class="channel-info-item">핸들: <span id="displayHandleName">-</span></div>
                     </div>
 
-                    <!-- 안내 박스 -->
-                    <div class="guide-box">
-                        <strong>1. 이미지 생성 → Flow에서 영상 제작</strong><br>
-                        &nbsp;&nbsp;생성된 이미지 + 첨부된 이미지를 Flow에서 영상으로 만드세요.<br>
-                        &nbsp;&nbsp;- 생성된 이미지, 첨부된 이미지 모두 다운로드<br>
-                        &nbsp;&nbsp;- <a href="https://labs.google/fx/ko" target="_blank" style="color: #667eea;">https://labs.google/fx/ko</a> 에 접속<br>
-                        &nbsp;&nbsp;- 에셋으로 동영상 만들기<br>
-                        &nbsp;&nbsp;- 생성 이미지 추가 후 구독 이미지 추가<br>
-                        &nbsp;&nbsp;- effect 단어만 입력 후 실행
+                    <!-- 좌우 패널 -->
+                    <div class="panels-row">
+                        <div class="left-panel">
+                            <div class="options-grid">
+                                1. 이미지 생성 → FLOW에서 영상제작<br>
+                                &nbsp;&nbsp;&nbsp;생성된 이미지 + 첨부된 이미지를 Flow에서 영상으로 만드세요.<br>
+                                - 생성된 이미지, 첨부된 이미지 모두 다운로드<br>
+                                - <a href="https://labs.google/fx/ko" target="_blank" style="color: #667eea;">https://labs.google/fx/ko</a> 에 접속<br>
+                                - 에셋으로 동영상 만들기<br>
+                                - 생성 이미지 추가 후 구독 이미지 추가<br>
+                                - effect 단어만 입력 후 실행
+                            </div>
+                        </div>
+
+                        <div class="right-panel">
+                            <div class="options-grid">
+                                2. 조건 선택
+                            </div>
+
+                            <div class="options-row">
+                                <img src="img/icon_feather/arrow-right-circle.svg" alt=""
+                                    onerror="this.style.display='none'">
+                                <label class="form-label">운영 국가</label>
+                                <select class="form-select" id="selectCountry" style="width: 220px;">
+                                    <option value="미국" selected>미국</option>
+                                    <option value="한국">한국</option>
+                                    <option value="일본">일본</option>
+                                    <option value="페루">페루</option>
+                                    <option value="멕시코">멕시코</option>
+                                    <option value="칠레">칠레</option>
+                                </select>
+                            </div>
+
+                            <div class="options-row">
+                                <img src="img/icon_feather/arrow-right-circle.svg" alt=""
+                                    onerror="this.style.display='none'">
+                                <label class="form-label">이미지 스타일</label>
+                                <select class="form-select" id="selectStyle" style="width: 220px;">
+                                    <option value="효과" selected>효과</option>
+                                    <option value="관광명소">관광명소</option>
+                                    <option value="도시">도시</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- 이미지 생성 영역 -->
@@ -426,7 +510,9 @@
                 channelName: localStorage.getItem('selectedChannelName') || '',
                 handleName: localStorage.getItem('selectedHandleName') || '',
                 description: localStorage.getItem('selectedChannelDescription') || '',
-                keywords: keywords.join(', ')
+                keywords: keywords.join(', '),
+                country: document.getElementById('selectCountry').value,
+                imageStyle: document.getElementById('selectStyle').value
             };
 
             fetch('/api/gemini_intro_image.php', {

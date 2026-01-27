@@ -27,6 +27,8 @@ $channelName = $input['channelName'] ?? '';
 $handleName = $input['handleName'] ?? '';
 $description = $input['description'] ?? '';
 $keywords = $input['keywords'] ?? '';
+$country = $input['country'] ?? '';
+$imageStyle = $input['imageStyle'] ?? '';
 
 if (!$apiKey) {
     echo json_encode(['ok' => false, 'error' => 'API 키가 필요합니다.']);
@@ -46,6 +48,12 @@ if ($description) {
 if ($keywords) {
     $prompt .= "Keywords: {$keywords}\n";
 }
+if ($country) {
+    $prompt .= "Target country: {$country}\n";
+}
+if ($imageStyle) {
+    $prompt .= "Image style: {$imageStyle}\n";
+}
 
 $prompt .= "\nDesign requirements:\n";
 $prompt .= "- Modern, cinematic intro image suitable for a YouTube video opening\n";
@@ -55,6 +63,14 @@ $prompt .= "- Professional and polished design\n";
 $prompt .= "- Square format (1:1 aspect ratio)\n";
 $prompt .= "- Clean typography, no clutter\n";
 $prompt .= "- Suitable for video intro/outro overlay\n";
+
+if ($imageStyle === '관광명소') {
+    $prompt .= "- Feature a famous landmark or tourist attraction from {$country}\n";
+} elseif ($imageStyle === '도시') {
+    $prompt .= "- Feature a cityscape or urban scenery from {$country}\n";
+} elseif ($imageStyle === '효과') {
+    $prompt .= "- Focus on abstract visual effects, light trails, and dynamic motion graphics\n";
+}
 
 // Gemini API 호출
 $model = 'gemini-2.0-flash-exp';
