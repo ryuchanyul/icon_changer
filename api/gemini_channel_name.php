@@ -61,9 +61,10 @@ Rules:
 - Each name should be concise (1-4 words).
 - Names should be catchy and easy to remember.
 - Names should reflect the topic and style.
+- Also provide a Korean translation for each name.
 
 Return ONLY valid JSON. No markdown, no explanation.
-Schema: {"names":["name1","name2","name3","name4","name5"]}
+Schema: {"names":["name1","name2","name3","name4","name5"],"translations":["한국어1","한국어2","한국어3","한국어4","한국어5"]}
 PROMPT;
 
 /* Payload */
@@ -157,6 +158,17 @@ $names = array_slice(
     5
 );
 
+/* Translations 처리 */
+$translations = [];
+if (isset($decoded["translations"]) && is_array($decoded["translations"])) {
+    foreach ($decoded["translations"] as $t) {
+        if (is_array($t)) $t = implode(' ', array_map('strval', $t));
+        if (!is_string($t)) $t = strval($t);
+        $translations[] = trim($t);
+    }
+}
+$translations = array_slice($translations, 0, count($names));
+
 /* Success */
-echo json_encode(["ok"=>true,"names"=>$names], JSON_UNESCAPED_UNICODE);
+echo json_encode(["ok"=>true,"names"=>$names,"translations"=>$translations], JSON_UNESCAPED_UNICODE);
 exit;

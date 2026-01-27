@@ -54,9 +54,10 @@ YouTube Handle Rules (MUST follow ALL):
 
 If user provided a preferred handle, create variations based on it.
 If no preferred handle, derive handles from the channel name.
+Also provide a Korean meaning/description for each handle.
 
 Return ONLY valid JSON. No markdown, no explanation.
-Schema: {"names":["handle1","handle2","handle3","handle4","handle5"]}
+Schema: {"names":["handle1","handle2","handle3","handle4","handle5"],"translations":["한국어뜻1","한국어뜻2","한국어뜻3","한국어뜻4","한국어뜻5"]}
 PROMPT;
 
 /* Payload */
@@ -168,6 +169,17 @@ if (empty($names)) {
     exit;
 }
 
+/* Translations 처리 */
+$translations = [];
+if (isset($decoded["translations"]) && is_array($decoded["translations"])) {
+    foreach ($decoded["translations"] as $t) {
+        if (is_array($t)) $t = implode(' ', array_map('strval', $t));
+        if (!is_string($t)) $t = strval($t);
+        $translations[] = trim($t);
+    }
+}
+$translations = array_slice($translations, 0, count($names));
+
 /* Success */
-echo json_encode(["ok"=>true,"names"=>$names], JSON_UNESCAPED_UNICODE);
+echo json_encode(["ok"=>true,"names"=>$names,"translations"=>$translations], JSON_UNESCAPED_UNICODE);
 exit;

@@ -73,8 +73,10 @@ $prompt .= "- Generate 10 hashtag keywords relevant to the channel.\n";
 $prompt .= "- Each keyword must start with # symbol.\n";
 $prompt .= "- Keywords should be in the same language as the channel name.\n";
 $prompt .= "- Mix broad and niche keywords for SEO.\n\n";
+$prompt .= "Translation Rules:\n";
+$prompt .= "- Also provide a Korean translation for each description.\n\n";
 $prompt .= "Return ONLY valid JSON. No markdown, no explanation.\n";
-$prompt .= 'Schema: {"names":["desc1","desc2"],"keywords":["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7","#tag8","#tag9","#tag10"]}';
+$prompt .= 'Schema: {"names":["desc1","desc2"],"translations":["한국어설명1","한국어설명2"],"keywords":["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7","#tag8","#tag9","#tag10"]}';
 
 /* Payload */
 $postData = [
@@ -205,9 +207,20 @@ if (isset($decoded["keywords"]) && is_array($decoded["keywords"])) {
 }
 $keywords = array_slice($keywords, 0, 10);
 
+/* Translations 처리 */
+$translations = [];
+if (isset($decoded["translations"]) && is_array($decoded["translations"])) {
+    foreach ($decoded["translations"] as $t) {
+        if (is_array($t)) $t = implode(' ', array_map('strval', $t));
+        if (!is_string($t)) $t = strval($t);
+        $translations[] = trim($t);
+    }
+}
+$translations = array_slice($translations, 0, count($names));
+
 /* Success */
 ob_end_clean();
-echo json_encode(["ok"=>true,"names"=>$names,"keywords"=>$keywords], JSON_UNESCAPED_UNICODE);
+echo json_encode(["ok"=>true,"names"=>$names,"translations"=>$translations,"keywords"=>$keywords], JSON_UNESCAPED_UNICODE);
 exit;
 
 } catch (Throwable $e) {
