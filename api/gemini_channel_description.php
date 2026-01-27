@@ -155,20 +155,22 @@ if (is_array($decoded) && isset($decoded[0]) && is_array($decoded[0])) {
     $decoded = $decoded[0];
 }
 
-/* 유연한 파싱 — Gemini가 다양한 키를 사용할 수 있음 */
+/* 유연한 파싱 — Gemini가 다양한 키/언어를 사용할 수 있음 */
 $names = [];
 $translations = [];
 $keywords = [];
 
 if (is_array($decoded)) {
 
-    /* 1) descriptions/names 배열이 있는 경우 */
+    /* 1) names/descriptions 직접 배열이 있는 경우 */
     if (isset($decoded["names"]) && is_array($decoded["names"])) {
         $names = $decoded["names"];
     } elseif (isset($decoded["descriptions"]) && is_array($decoded["descriptions"])) {
         $names = $decoded["descriptions"];
-    } else {
-        /* 2) desc1, desc2... 또는 번호 키로 된 경우 */
+    }
+
+    /* 2) 최상위에 desc* 키가 있는 경우 */
+    if (empty($names)) {
         foreach ($decoded as $key => $val) {
             if (is_string($val) && preg_match('/^desc/i', $key)) {
                 $names[] = $val;
@@ -176,21 +178,51 @@ if (is_array($decoded)) {
         }
     }
 
-    /* translations 배열이 있는 경우 */
-    if (isset($decoded["translations"]) && is_array($decoded["translations"])) {
-        $translations = $decoded["translations"];
-    } else {
-        /* 한국어설명1, 한국어설명2... 키로 된 경우 */
+    /* 3) 아직 비어있으면 — 모든 배열 값 안의 객체에서 desc*/한국어* 추출 */
+    if (empty($names)) {
         foreach ($decoded as $key => $val) {
-            if (is_string($val) && preg_match('/^한국어/', $key)) {
-                $translations[] = $val;
+            if (is_array($val) && !empty($val) && isset($val[0]) && is_array($val[0])) {
+                /* val은 객체 배열 (예: descripciones: [{desc1:..., 한국어설명1:...}, ...]) */
+                foreach ($val as $obj) {
+                    if (!is_array($obj)) continue;
+                    foreach ($obj as $objKey => $objVal) {
+                        if (is_string($objVal) && preg_match('/^desc/i', $objKey)) {
+                            $names[] = $objVal;
+                        }
+                        if (is_string($objVal) && preg_match('/^한국어/', $objKey)) {
+                            $translations[] = $objVal;
+                        }
+                    }
+                }
             }
         }
     }
 
-    /* keywords */
+    /* translations — 아직 비어있으면 최상위/translations 키에서 추출 */
+    if (empty($translations)) {
+        if (isset($decoded["translations"]) && is_array($decoded["translations"])) {
+            $translations = $decoded["translations"];
+        } else {
+            /* 최상위 한국어* 키 */
+            foreach ($decoded as $key => $val) {
+                if (is_string($val) && preg_match('/^한국어/', $key)) {
+                    $translations[] = $val;
+                }
+            }
+        }
+    }
+
+    /* keywords — keywords 키 또는 # 시작하는 문자열 배열 찾기 */
     if (isset($decoded["keywords"]) && is_array($decoded["keywords"])) {
         $keywords = $decoded["keywords"];
+    } else {
+        /* 모든 키를 탐색하여 # 시작하는 문자열 배열 찾기 */
+        foreach ($decoded as $key => $val) {
+            if (is_array($val) && !empty($val) && is_string($val[0]) && strpos($val[0], '#') === 0) {
+                $keywords = $val;
+                break;
+            }
+        }
     }
 }
 
