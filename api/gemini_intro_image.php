@@ -21,19 +21,31 @@ if (!$input) {
     exit;
 }
 
-$apiKey = $input['apiKey'] ?? '';
-$type = $input['type'] ?? 'intro';
-$channelName = $input['channelName'] ?? '';
-$handleName = $input['handleName'] ?? '';
-$description = $input['description'] ?? '';
-$keywords = $input['keywords'] ?? '';
-$country = $input['country'] ?? '';
-$imageStyle = $input['imageStyle'] ?? '';
+/* Params */
+$apiKey       = trim($input['apiKey'] ?? '');
+$type         = trim($input['type'] ?? 'intro');
+$channelName  = trim($input['channelName'] ?? '');
+$handleName   = trim($input['handleName'] ?? '');
+$description  = trim($input['description'] ?? '');
+$keywords     = trim($input['keywords'] ?? '');
+$country      = trim($input['country'] ?? '');
+$imageStyle   = trim($input['imageStyle'] ?? '');
 
 if (!$apiKey) {
     echo json_encode(['ok' => false, 'error' => 'API 키가 필요합니다.']);
     exit;
 }
+
+// 국가명 한국어 → 영어 매핑
+$countryMap = [
+    '미국'   => 'United States',
+    '한국'   => 'South Korea',
+    '일본'   => 'Japan',
+    '페루'   => 'Peru',
+    '멕시코' => 'Mexico',
+    '칠레'   => 'Chile',
+];
+$countryEN = $countryMap[$country] ?? $country;
 
 // 인트로 이미지 프롬프트 생성 (스타일별 분기)
 $prompt = '';
@@ -48,7 +60,7 @@ if ($imageStyle === '효과') {
 
 } elseif ($imageStyle === '관광명소') {
     // ── 관광명소: 국가별 랜덤 랜드마크 ──
-    $prompt .= "Generate a stunning cinematic photo of a random famous tourist landmark in {$country}.\n";
+    $prompt .= "Generate a stunning cinematic photo of a random famous tourist landmark in {$countryEN}.\n";
     $prompt .= "Style: epic wide-angle landscape photography, golden hour lighting, vivid colors, travel documentary look.\n";
     $prompt .= "Show the landmark as the hero subject with dramatic sky and atmosphere.\n";
     $prompt .= "Square format (1:1 aspect ratio), high resolution, ultra detailed.\n";
@@ -56,7 +68,7 @@ if ($imageStyle === '효과') {
 
 } elseif ($imageStyle === '도시') {
     // ── 도시: 국가별 랜덤 도시 풍경 ──
-    $prompt .= "Generate a stunning cinematic photo of a random famous city skyline or cityscape in {$country}.\n";
+    $prompt .= "Generate a stunning cinematic photo of a random famous city skyline or cityscape in {$countryEN}.\n";
     $prompt .= "Style: modern urban photography, dramatic lighting, aerial or street-level view, vibrant city lights.\n";
     $prompt .= "Show iconic buildings, streets, or skyline with atmospheric mood.\n";
     $prompt .= "Square format (1:1 aspect ratio), high resolution, ultra detailed.\n";
