@@ -422,7 +422,7 @@
                                 <!-- 숨김 파일 선택기 -->
                                 <input id="customStyleFileInput"
                                     type="file"
-                                    accept="image/jpeg,image/png,image/webp"
+                                    accept="image/jpg,image/jpeg,image/png,image/webp"
                                     style="display:none" />
                             </div>
                         </div>
@@ -543,7 +543,7 @@
                     fd.append('image', file);
                     fd.append('userid', 'admin');
 
-                    const res = await fetch('/api/upload_user_style.php', {
+                    const res = await fetch('/upload/upload_user_style.php', {
                         method: 'POST',
                         body: fd
                     });
