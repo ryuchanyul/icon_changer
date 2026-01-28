@@ -1,4 +1,5 @@
 <?php
+    ini_set('display_errors', 0);
     header('Content-Type: application/json; charset=utf-8');
     date_default_timezone_set("Asia/Seoul");
     include '../db_mssql_sh.php';
@@ -63,7 +64,7 @@
     }
 
     /* userdno 계산 */
-    $updatetime = new DateTime();
+    $updatetime = date("Y-m-d H:i:s");
     $sqlMax = "SELECT ISNULL(MAX(ai_ycma_userdno),0) AS maxno
                FROM ai_ycm_automate_userstyle
                WHERE ai_ycma_userid = ?";
@@ -86,7 +87,7 @@
     /* INSERT */
     $sqlIns = "INSERT INTO ai_ycm_automate_userstyle
                (ai_ycma_userid, ai_ycma_userdno, ai_ycma_userimage, ai_ycma_inputtime)
-               VALUES (?, ?, ?, ?)";
+               VALUES (?, ?, ?, CONVERT(datetime, ?, 120))";
     $stmtIns = sqlsrv_query($connsh, $sqlIns, [$userid, $styledno, $storedName, $updatetime]);
 
     if ($stmtIns === false) {
