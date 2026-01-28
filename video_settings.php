@@ -230,6 +230,35 @@
             line-height: 1;
         }
 
+        /* 사용자 등록된 스타일 삭제 버튼 */
+        .user-style-delete {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.9);
+            border: none;
+            color: white;
+            font-size: 1rem;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 10;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-card:hover .user-style-delete {
+            display: flex;
+        }
+
+        .user-style-delete:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
         /* 버튼 */
         .btn {
             padding: 0.75rem 2rem;
@@ -496,6 +525,71 @@
         }
 
         // ==========================================
+        // DB에서 사용자 스타일 목록 로드
+        // ==========================================
+        async function loadUserStyles() {
+            const grid = document.getElementById('styleOptions');
+            const uploadTile = document.getElementById('customStyleTile');
+            if (!grid || !uploadTile) return;
+
+            // 기존 사용자 스타일 타일 제거
+            grid.querySelectorAll('.user-style-tile').forEach(el => el.remove());
+
+            try {
+                const res = await fetch('/upload/get_user_styles.php?userid=admin');
+                if (!res.ok) return;
+
+                const data = await res.json();
+                if (!data.ok || !data.styles || data.styles.length === 0) return;
+
+                // 업로드 타일 앞에 사용자 스타일 삽입
+                data.styles.forEach(style => {
+                    const tile = document.createElement('div');
+                    tile.className = 'option-card style-card user-style-tile';
+                    tile.style.backgroundImage = `url('${style.image_url}')`;
+                    tile.onclick = function() { selectStyle(style.style_key, tile); };
+
+                    tile.innerHTML =
+                        `<button class="user-style-delete" onclick="event.stopPropagation(); deleteUserStyle('${style.style_key}', this.parentElement)">&times;</button>` +
+                        `<div class="option-title">사용자 #${style.style_key.replace('custom_','')}</div>`;
+
+                    grid.insertBefore(tile, uploadTile);
+                });
+
+            } catch (err) {
+                console.error('사용자 스타일 로드 실패:', err);
+            }
+        }
+
+        // ==========================================
+        // 사용자 스타일 삭제
+        // ==========================================
+        async function deleteUserStyle(styleKey, tileEl) {
+            if (!confirm('이 스타일을 삭제하시겠습니까?')) return;
+
+            const userdno = styleKey.replace('custom_', '');
+            try {
+                const res = await fetch('/upload/delete_user_style.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `userid=admin&userdno=${userdno}`
+                });
+                const data = await res.json();
+                if (!data.ok) throw new Error(data.error);
+
+                // 타일 제거
+                tileEl.remove();
+
+                // 선택된 스타일이었으면 초기화
+                if (formData.style === styleKey) {
+                    formData.style = null;
+                }
+            } catch (err) {
+                alert('삭제 실패: ' + err.message);
+            }
+        }
+
+        // ==========================================
         // 사용자 정의 스타일 업로드
         // ==========================================
 
@@ -503,11 +597,14 @@
         function openCustomStylePicker() {
             const input = document.getElementById('customStyleFileInput');
             if (!input) return;
-            input.value = '';     // 같은 파일 재선택 가능
+            input.value = '';
             input.click();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            // 페이지 로드 시 사용자 스타일 불러오기
+            loadUserStyles();
+
             const input = document.getElementById('customStyleFileInput');
             if (!input) return;
 
@@ -521,18 +618,10 @@
                     return;
                 }
 
-                // 클라이언트 1차 검증: 파일 타입
+                // 클라이언트 검증
                 const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
                 if (!allowedTypes.includes(file.type)) {
                     alert('JPG, PNG, WEBP 이미지 파일만 업로드 가능합니다.');
-                    isUploading = false;
-                    input.value = '';
-                    return;
-                }
-
-                // 클라이언트 2차 검증: 파일 크기 (5MB)
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('이미지 파일 크기는 5MB 이하만 가능합니다.');
                     isUploading = false;
                     input.value = '';
                     return;
@@ -555,22 +644,16 @@
                     const data = await res.json();
                     if (!data.ok) throw new Error(data.error || '알 수 없는 오류');
 
-                    // 타일에 업로드된 이미지 적용
-                    const tile = document.getElementById('customStyleTile');
-                    tile.style.backgroundImage = `url('${data.image_url}')`;
-                    tile.classList.remove('style-card--custom');
+                    // 업로드 성공 → 목록 새로고침 후 자동 선택
+                    await loadUserStyles();
 
-                    // 중앙 아이콘 제거
-                    const center = tile.querySelector('.custom-style-center');
-                    if (center) center.remove();
-
-                    // 업로드 후 → 타일 클릭 시 스타일 선택으로 전환
-                    tile.onclick = function() {
-                        selectStyle(data.style_key, tile);
-                    };
-
-                    // 즉시 선택 상태로 적용
-                    selectStyle(data.style_key, tile);
+                    // 새로 추가된 타일 자동 선택
+                    const grid = document.getElementById('styleOptions');
+                    const tiles = grid.querySelectorAll('.user-style-tile');
+                    const newTile = tiles[tiles.length - 1];
+                    if (newTile) {
+                        selectStyle(data.style_key, newTile);
+                    }
 
                 } catch (err) {
                     alert('업로드 실패: ' + err.message);
