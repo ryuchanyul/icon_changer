@@ -2,7 +2,7 @@
     ini_set('display_errors', 0);
     header('Content-Type: application/json; charset=utf-8');
     date_default_timezone_set("Asia/Seoul");
-    include '../db_mssql_sh.php';
+    include __DIR__ . '/../db_mssql_sh.php';
 
     $userid  = $_POST['userid']  ?? '';
     $userdno = $_POST['userdno'] ?? '';

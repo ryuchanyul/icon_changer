@@ -537,10 +537,26 @@
 
             try {
                 const res = await fetch('/upload/get_user_styles.php?userid=admin');
-                if (!res.ok) return;
+                if (!res.ok) {
+                    console.error('사용자 스타일 API 응답 오류: HTTP', res.status);
+                    return;
+                }
 
-                const data = await res.json();
-                if (!data.ok || !data.styles || data.styles.length === 0) return;
+                const text = await res.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (parseErr) {
+                    console.error('사용자 스타일 API JSON 파싱 실패:', text);
+                    return;
+                }
+
+                if (!data.ok) {
+                    console.error('사용자 스타일 API 에러:', data.error);
+                    return;
+                }
+
+                if (!data.styles || data.styles.length === 0) return;
 
                 // 업로드 타일 앞에 사용자 스타일 삽입
                 data.styles.forEach(style => {

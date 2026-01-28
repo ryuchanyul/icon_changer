@@ -2,10 +2,15 @@
     ini_set('display_errors', 0);
     header('Content-Type: application/json; charset=utf-8');
     date_default_timezone_set("Asia/Seoul");
-    include '../db_mssql_sh.php';
+    include __DIR__ . '/../db_mssql_sh.php';
 
     $userid = $_GET['userid'] ?? $_POST['userid'] ?? 'admin';
     $publicUrl = '/upload/userstyleimage';
+
+    if (!isset($connsh) || $connsh === false) {
+        echo json_encode(['ok'=>false, 'error'=>'DB 연결 실패'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
 
     $sql = "SELECT ai_ycma_userdno, ai_ycma_userimage
             FROM ai_ycm_automate_userstyle
