@@ -848,6 +848,7 @@
         <!-- 메뉴 영역 -->
         <ul class="menu-list">
             <li class="menu-item active" data-menu="subscriptionlist">📋 <a href="channel_manager.php">구독 리스트</a></li>
+            <li class="menu-item" data-menu="videosettings">🎬 <a href="video_settings.php">영상 설정</a></li>
             <li class="menu-item" data-menu="scripttoimage">📋 시나리오 이미지 생성</li>
             <li class="menu-item" data-menu="idolprompt">📋 <a href="IDOL_Prompt_Generator_Simple_V4.php">IDOL 생성프롬프트</a></li>
         </ul>
