@@ -63,15 +63,17 @@
     }
 
     /* userdno 계산 */
-    $updatetime = date("Y-m-d H:i:s");
+    $updatetime = new DateTime();
     $sqlMax = "SELECT ISNULL(MAX(ai_ycma_userdno),0) AS maxno
                FROM ai_ycm_automate_userstyle
                WHERE ai_ycma_userid = ?";
     $stmt = sqlsrv_query($connsh, $sqlMax, [$userid]);
 
     if ($stmt === false) {
+        $errors = sqlsrv_errors();
+        $detail = $errors ? $errors[0]['message'] : '알 수 없는 오류';
         @unlink($destPath);
-        echo json_encode(['ok'=>false,'error'=>'DB 조회 실패'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['ok'=>false,'error'=>'DB 조회 실패: '.$detail], JSON_UNESCAPED_UNICODE);
         exit;
     }
 
@@ -88,8 +90,10 @@
     $stmtIns = sqlsrv_query($connsh, $sqlIns, [$userid, $styledno, $storedName, $updatetime]);
 
     if ($stmtIns === false) {
+        $errors = sqlsrv_errors();
+        $detail = $errors ? $errors[0]['message'] : '알 수 없는 오류';
         @unlink($destPath);
-        echo json_encode(['ok'=>false,'error'=>'DB 저장 실패'], JSON_UNESCAPED_UNICODE);
+        echo json_encode(['ok'=>false,'error'=>'DB 저장 실패: '.$detail], JSON_UNESCAPED_UNICODE);
         exit;
     }
 
