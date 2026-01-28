@@ -202,98 +202,32 @@
             margin: 0;
         }
 
-        /* 사용자 등록 카드 */
-        .custom-style-card {
-            height: 180px;
+        /* 사용자 정의 타일 (초기 상태: 점선 테두리) */
+        .style-card--custom {
             border: 2px dashed #ccc;
             background: #fafbfc;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-radius: 12px;
-            position: relative;
         }
 
-        .custom-style-card:hover {
+        .style-card--custom:hover {
             border-color: #667eea;
             background: #f0f2ff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
         }
 
-        .custom-style-card .upload-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .custom-style-center {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 700;
         }
 
-        .custom-style-card .upload-text {
-            font-size: 0.85rem;
-            font-weight: 600;
+        .custom-style-icon {
+            font-size: 2.5rem;
             color: #667eea;
-        }
-
-        .custom-style-card .upload-hint {
-            font-size: 0.75rem;
-            color: #999;
-        }
-
-        /* 사용자 등록된 스타일 카드 */
-        .user-style-card {
-            position: relative;
-        }
-
-        .user-style-card .delete-style-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: rgba(239, 68, 68, 0.9);
-            border: none;
-            color: white;
-            font-size: 0.85rem;
-            cursor: pointer;
-            z-index: 10;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .user-style-card:hover .delete-style-btn {
-            display: flex;
-        }
-
-        .user-style-card .delete-style-btn:hover {
-            background: rgba(220, 38, 38, 1);
-            transform: scale(1.1);
-        }
-
-        .user-style-badge {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 0.65rem;
-            font-weight: 600;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            z-index: 10;
+            line-height: 1;
         }
 
         /* 버튼 */
@@ -321,162 +255,6 @@
             display: flex;
             justify-content: flex-end;
             gap: 1rem;
-        }
-
-        /* 모달 */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            z-index: 2000;
-            animation: fadeIn 0.2s ease-in;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            max-width: 480px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .modal-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #333;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.75rem;
-            color: #999;
-            cursor: pointer;
-            padding: 0;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-
-        .modal-close:hover {
-            background-color: #f5f5f5;
-            color: #333;
-        }
-
-        .modal-body {
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-body .preview-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            background: #f8f9fa;
-        }
-
-        .modal-body .form-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .modal-body .form-input:focus {
-            border-color: #667eea;
-        }
-
-        .modal-body .form-input-label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal-footer {
-            display: flex;
-            gap: 0.75rem;
-            justify-content: flex-end;
-        }
-
-        .modal-footer .btn-cancel {
-            padding: 0.6rem 1.5rem;
-            background: #f0f0f0;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #666;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .modal-footer .btn-cancel:hover {
-            background: #e0e0e0;
-        }
-
-        .modal-footer .btn-confirm {
-            padding: 0.6rem 1.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: white;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .modal-footer .btn-confirm:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .modal-footer .btn-confirm:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
 
         /* 스크롤바 */
@@ -631,15 +409,21 @@
                                     <div class="option-title">브이로그</div>
                                 </div>
 
-                                <!-- 사용자 등록 스타일 (동적으로 추가됨) -->
-                                <div id="userStyleSlot"></div>
-
-                                <!-- 사용자 스타일 등록 버튼 -->
-                                <div class="custom-style-card" onclick="openCustomStyleUpload()">
-                                    <div class="upload-icon">+</div>
-                                    <div class="upload-text">직접 등록</div>
-                                    <div class="upload-hint">이미지를 업로드하세요</div>
+                                <!-- 사용자 정의 타일 (첨부 이미지 방식) -->
+                                <div class="option-card style-card style-card--custom"
+                                    id="customStyleTile"
+                                    onclick="openCustomStylePicker()">
+                                    <div class="custom-style-center">
+                                        <span class="custom-style-icon">✦</span>
+                                    </div>
+                                    <div class="option-title">사용자 정의</div>
                                 </div>
+
+                                <!-- 숨김 파일 선택기 -->
+                                <input id="customStyleFileInput"
+                                    type="file"
+                                    accept="image/jpeg,image/png,image/webp"
+                                    style="display:none" />
                             </div>
                         </div>
                     </div>
@@ -655,31 +439,6 @@
         </div>
     </div>
 
-    <!-- 숨겨진 파일 입력 -->
-    <input type="file" id="customStyleFileInput" accept="image/*" style="display: none;" onchange="handleCustomStyleFile(event)">
-
-    <!-- 사용자 스타일 등록 모달 -->
-    <div class="modal-overlay" id="customStyleModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 class="modal-title">스타일 직접 등록</h2>
-                <button class="modal-close" onclick="closeCustomStyleModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <img id="customStylePreview" class="preview-image" src="" alt="미리보기" style="display: none;">
-                <div id="customStylePlaceholder" style="width: 100%; height: 200px; background: #f8f9fa; border: 2px dashed #ddd; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 0.9rem; margin-bottom: 1rem; cursor: pointer;" onclick="document.getElementById('customStyleFileInput').click();">
-                    클릭하여 이미지를 선택하세요
-                </div>
-                <label class="form-input-label">스타일 이름</label>
-                <input type="text" id="customStyleName" class="form-input" placeholder="예: 나만의 스타일" maxlength="20">
-            </div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeCustomStyleModal()">취소</button>
-                <button class="btn-confirm" id="customStyleConfirmBtn" onclick="saveCustomStyle()" disabled>등록하기</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // ==========================================
         // 전역 변수
@@ -689,7 +448,7 @@
             style: null
         };
 
-        let customStyleImageData = null;
+        let isUploading = false;
 
         // ==========================================
         // 비율 선택
@@ -712,7 +471,7 @@
             const container = document.getElementById('styleOptions');
             if (!container) return;
 
-            container.querySelectorAll('.option-card.selected, .user-style-card.selected')
+            container.querySelectorAll('.option-card.selected')
                 .forEach(card => card.classList.remove('selected'));
 
             el.classList.add('selected');
@@ -737,162 +496,90 @@
         }
 
         // ==========================================
-        // 사용자 스타일 등록 기능
+        // 사용자 정의 스타일 업로드
         // ==========================================
 
-        // 사용자 스타일 업로드 시작
-        function openCustomStyleUpload() {
-            // 모달 열기
-            document.getElementById('customStyleModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            // 초기화
-            customStyleImageData = null;
-            document.getElementById('customStyleName').value = '';
-            document.getElementById('customStylePreview').style.display = 'none';
-            document.getElementById('customStylePlaceholder').style.display = 'flex';
-            document.getElementById('customStyleConfirmBtn').disabled = true;
+        // 타일 클릭 → 파일 선택
+        function openCustomStylePicker() {
+            const input = document.getElementById('customStyleFileInput');
+            if (!input) return;
+            input.value = '';     // 같은 파일 재선택 가능
+            input.click();
         }
 
-        // 모달 닫기
-        function closeCustomStyleModal() {
-            document.getElementById('customStyleModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-            customStyleImageData = null;
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('customStyleFileInput');
+            if (!input) return;
 
-        // 파일 선택 처리
-        function handleCustomStyleFile(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+            input.addEventListener('change', async (e) => {
+                if (isUploading) return;
+                isUploading = true;
 
-            // 파일 크기 제한 (5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('이미지 파일 크기는 5MB 이하만 가능합니다.');
-                event.target.value = '';
-                return;
-            }
-
-            // 이미지 파일 확인
-            if (!file.type.startsWith('image/')) {
-                alert('이미지 파일만 업로드 가능합니다.');
-                event.target.value = '';
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                customStyleImageData = e.target.result;
-
-                // 미리보기 표시
-                const preview = document.getElementById('customStylePreview');
-                preview.src = customStyleImageData;
-                preview.style.display = 'block';
-                document.getElementById('customStylePlaceholder').style.display = 'none';
-
-                // 모달이 열려있지 않으면 열기
-                if (!document.getElementById('customStyleModal').classList.contains('active')) {
-                    document.getElementById('customStyleModal').classList.add('active');
-                    document.body.style.overflow = 'hidden';
+                const file = e.target.files?.[0];
+                if (!file) {
+                    isUploading = false;
+                    return;
                 }
 
-                updateConfirmButton();
-            };
-            reader.readAsDataURL(file);
+                // 클라이언트 1차 검증: 파일 타입
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('JPG, PNG, WEBP 이미지 파일만 업로드 가능합니다.');
+                    isUploading = false;
+                    input.value = '';
+                    return;
+                }
 
-            // 파일 입력 초기화 (같은 파일 재선택 가능)
-            event.target.value = '';
-        }
+                // 클라이언트 2차 검증: 파일 크기 (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('이미지 파일 크기는 5MB 이하만 가능합니다.');
+                    isUploading = false;
+                    input.value = '';
+                    return;
+                }
 
-        // 등록 버튼 활성화 체크
-        function updateConfirmButton() {
-            const name = document.getElementById('customStyleName').value.trim();
-            const btn = document.getElementById('customStyleConfirmBtn');
-            btn.disabled = !(customStyleImageData && name.length > 0);
-        }
+                try {
+                    const fd = new FormData();
+                    fd.append('image', file);
+                    fd.append('userid', 'admin');
 
-        // 이름 입력 시 버튼 상태 업데이트
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('customStyleName').addEventListener('input', updateConfirmButton);
-        });
+                    const res = await fetch('/api/upload_user_style.php', {
+                        method: 'POST',
+                        body: fd
+                    });
 
-        // 사용자 스타일 저장
-        function saveCustomStyle() {
-            const name = document.getElementById('customStyleName').value.trim();
+                    if (!res.ok) {
+                        throw new Error('서버 응답 오류 (HTTP ' + res.status + ')');
+                    }
 
-            if (!customStyleImageData || !name) {
-                alert('이미지와 스타일 이름을 입력해주세요.');
-                return;
-            }
+                    const data = await res.json();
+                    if (!data.ok) throw new Error(data.error || '알 수 없는 오류');
 
-            // localStorage에서 기존 사용자 스타일 가져오기
-            const userStyles = JSON.parse(localStorage.getItem('userCustomStyles') || '[]');
+                    // 타일에 업로드된 이미지 적용
+                    const tile = document.getElementById('customStyleTile');
+                    tile.style.backgroundImage = `url('${data.image_url}')`;
+                    tile.classList.remove('style-card--custom');
 
-            // 새 스타일 추가
-            const newStyle = {
-                id: 'custom_' + Date.now(),
-                name: name,
-                image: customStyleImageData,
-                createdAt: new Date().toISOString()
-            };
+                    // 중앙 아이콘 제거
+                    const center = tile.querySelector('.custom-style-center');
+                    if (center) center.remove();
 
-            userStyles.push(newStyle);
-            localStorage.setItem('userCustomStyles', JSON.stringify(userStyles));
+                    // 업로드 후 → 타일 클릭 시 스타일 선택으로 전환
+                    tile.onclick = function() {
+                        selectStyle(data.style_key, tile);
+                    };
 
-            // 모달 닫기
-            closeCustomStyleModal();
+                    // 즉시 선택 상태로 적용
+                    selectStyle(data.style_key, tile);
 
-            // 스타일 그리드 업데이트
-            renderUserStyles();
-        }
-
-        // 사용자 스타일 삭제
-        function deleteCustomStyle(styleId, event) {
-            event.stopPropagation();
-
-            if (!confirm('이 스타일을 삭제하시겠습니까?')) return;
-
-            const userStyles = JSON.parse(localStorage.getItem('userCustomStyles') || '[]');
-            const updated = userStyles.filter(s => s.id !== styleId);
-            localStorage.setItem('userCustomStyles', JSON.stringify(updated));
-
-            // 선택된 스타일이 삭제된 것이면 초기화
-            if (formData.style === styleId) {
-                formData.style = null;
-            }
-
-            renderUserStyles();
-        }
-
-        // 사용자 스타일 렌더링
-        function renderUserStyles() {
-            const slot = document.getElementById('userStyleSlot');
-            if (!slot) return;
-
-            const userStyles = JSON.parse(localStorage.getItem('userCustomStyles') || '[]');
-
-            let html = '';
-            userStyles.forEach(style => {
-                html += `
-                    <div class="option-card style-card user-style-card"
-                        onclick="selectStyle('${style.id}', this)"
-                        style="background-image: url('${style.image}');">
-                        <span class="user-style-badge">직접 등록</span>
-                        <button class="delete-style-btn" onclick="deleteCustomStyle('${style.id}', event)" title="삭제">&times;</button>
-                        <div class="option-title">${escapeHtml(style.name)}</div>
-                    </div>
-                `;
+                } catch (err) {
+                    alert('업로드 실패: ' + err.message);
+                } finally {
+                    isUploading = false;
+                    input.value = '';
+                }
             });
-
-            slot.innerHTML = html;
-        }
-
-        // HTML 이스케이프
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+        });
 
         // ==========================================
         // 사이드바 토글
@@ -903,14 +590,6 @@
                 sidebar.classList.toggle('hidden');
             }
         }
-
-        // ==========================================
-        // 페이지 로드 시 초기화
-        // ==========================================
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log('🎬 영상 설정 페이지 로드');
-            renderUserStyles();
-        });
     </script>
 </body>
 </html>
