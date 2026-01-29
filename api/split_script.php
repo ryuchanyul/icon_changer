@@ -1,6 +1,6 @@
 <?php
 /**
- * 대본 분할 API
+ * 대본 분할 API (Gemini)
  * 스토리를 문맥에 맞춰 이미지 생성에 적합한 씬(문단)으로 분리
  */
 
@@ -24,7 +24,7 @@ $input = json_decode(file_get_contents('php://input'), true);
 $script = $input['script'] ?? '';
 $style = $input['style'] ?? '';
 $ratio = $input['ratio'] ?? '16:9';
-$apiKey = $input['apiKey'] ?? '';  // OpenAI API Key
+$apiKey = $input['apiKey'] ?? '';  // Gemini API Key
 
 if (empty($script)) {
     echo json_encode(['ok' => false, 'error' => '대본이 입력되지 않았습니다.']);
@@ -32,7 +32,7 @@ if (empty($script)) {
 }
 
 if (empty($apiKey)) {
-    echo json_encode(['ok' => false, 'error' => 'API 키가 필요합니다.']);
+    echo json_encode(['ok' => false, 'error' => 'Gemini API 키가 필요합니다.']);
     exit;
 }
 
@@ -42,8 +42,8 @@ $scriptLength = mb_strlen($script, 'UTF-8');
 // 예상 씬 개수 계산 (약 200~300자당 1씬)
 $estimatedScenes = max(5, min(30, ceil($scriptLength / 250)));
 
-// OpenAI API 호출을 위한 프롬프트
-$systemPrompt = <<<PROMPT
+// Gemini API 호출을 위한 프롬프트
+$prompt = <<<PROMPT
 당신은 영상 제작을 위한 대본 분석 전문가입니다.
 주어진 대본을 이미지 생성에 적합한 씬(장면)으로 분할해야 합니다.
 
@@ -54,7 +54,7 @@ $systemPrompt = <<<PROMPT
 4. 프롬프트는 구체적인 시각 요소(배경, 인물, 행동, 분위기)를 포함해야 합니다.
 5. 약 {$estimatedScenes}개 내외의 씬으로 분할하세요.
 
-## 출력 형식 (JSON):
+## 출력 형식 (반드시 JSON만 출력):
 {
   "scenes": [
     {
@@ -66,13 +66,9 @@ $systemPrompt = <<<PROMPT
       "mood": "분위기 키워드"
     }
   ],
-  "totalScenes": 씬 총 개수,
+  "totalScenes": 씬총개수,
   "estimatedDuration": "전체 예상 시간"
 }
-PROMPT;
-
-$userPrompt = <<<PROMPT
-다음 대본을 분석하여 이미지 생성에 적합한 씬으로 분할해주세요.
 
 ## 영상 설정:
 - 화면 비율: {$ratio}
@@ -80,10 +76,12 @@ $userPrompt = <<<PROMPT
 
 ## 대본:
 {$script}
+
+위 대본을 분석하여 JSON 형식으로만 응답해주세요. 다른 설명 없이 JSON만 출력하세요.
 PROMPT;
 
-// OpenAI API 호출
-$response = callOpenAI($apiKey, $systemPrompt, $userPrompt);
+// Gemini API 호출
+$response = callGemini($apiKey, $prompt);
 
 if ($response['ok']) {
     echo json_encode([
@@ -100,20 +98,34 @@ if ($response['ok']) {
 }
 
 /**
- * OpenAI API 호출 함수
+ * Gemini API 호출 함수
  */
-function callOpenAI($apiKey, $systemPrompt, $userPrompt) {
-    $url = 'https://api.openai.com/v1/chat/completions';
+function callGemini($apiKey, $prompt) {
+    // Gemini 1.5 Flash (빠르고 저렴) 또는 Gemini 1.5 Pro 사용
+    $model = 'gemini-1.5-flash';
+    $url = "https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent?key={$apiKey}";
 
     $data = [
-        'model' => 'gpt-4o',  // 또는 'gpt-4-turbo', 'gpt-3.5-turbo'
-        'messages' => [
-            ['role' => 'system', 'content' => $systemPrompt],
-            ['role' => 'user', 'content' => $userPrompt]
+        'contents' => [
+            [
+                'parts' => [
+                    ['text' => $prompt]
+                ]
+            ]
         ],
-        'temperature' => 0.7,
-        'max_tokens' => 4000,
-        'response_format' => ['type' => 'json_object']
+        'generationConfig' => [
+            'temperature' => 0.7,
+            'topK' => 40,
+            'topP' => 0.95,
+            'maxOutputTokens' => 8192,
+            'responseMimeType' => 'application/json'
+        ],
+        'safetySettings' => [
+            ['category' => 'HARM_CATEGORY_HARASSMENT', 'threshold' => 'BLOCK_NONE'],
+            ['category' => 'HARM_CATEGORY_HATE_SPEECH', 'threshold' => 'BLOCK_NONE'],
+            ['category' => 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'threshold' => 'BLOCK_NONE'],
+            ['category' => 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold' => 'BLOCK_NONE']
+        ]
     ];
 
     $ch = curl_init();
@@ -123,8 +135,7 @@ function callOpenAI($apiKey, $systemPrompt, $userPrompt) {
         CURLOPT_POST => true,
         CURLOPT_POSTFIELDS => json_encode($data),
         CURLOPT_HTTPHEADER => [
-            'Content-Type: application/json',
-            'Authorization: Bearer ' . $apiKey
+            'Content-Type: application/json'
         ],
         CURLOPT_TIMEOUT => 120
     ]);
@@ -140,17 +151,33 @@ function callOpenAI($apiKey, $systemPrompt, $userPrompt) {
 
     if ($httpCode !== 200) {
         $errorData = json_decode($result, true);
-        $errorMessage = $errorData['error']['message'] ?? 'API 오류 (HTTP ' . $httpCode . ')';
+        $errorMessage = $errorData['error']['message'] ?? 'Gemini API 오류 (HTTP ' . $httpCode . ')';
         return ['ok' => false, 'error' => $errorMessage];
     }
 
     $responseData = json_decode($result, true);
-    $content = $responseData['choices'][0]['message']['content'] ?? '';
 
-    // JSON 파싱
+    // Gemini 응답 구조에서 텍스트 추출
+    $content = $responseData['candidates'][0]['content']['parts'][0]['text'] ?? '';
+
+    if (empty($content)) {
+        // 차단된 경우 확인
+        $blockReason = $responseData['candidates'][0]['finishReason'] ?? '';
+        if ($blockReason === 'SAFETY') {
+            return ['ok' => false, 'error' => '안전 필터에 의해 차단되었습니다.'];
+        }
+        return ['ok' => false, 'error' => 'AI 응답이 비어있습니다.'];
+    }
+
+    // JSON 파싱 (마크다운 코드 블록 제거)
+    $content = trim($content);
+    $content = preg_replace('/^```json\s*/i', '', $content);
+    $content = preg_replace('/^```\s*/i', '', $content);
+    $content = preg_replace('/\s*```$/i', '', $content);
+
     $parsedContent = json_decode($content, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
-        return ['ok' => false, 'error' => 'AI 응답 파싱 오류'];
+        return ['ok' => false, 'error' => 'AI 응답 파싱 오류: ' . json_last_error_msg()];
     }
 
     return ['ok' => true, 'data' => $parsedContent];

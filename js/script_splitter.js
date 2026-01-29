@@ -19,7 +19,7 @@ const ScriptSplitter = {
      */
     async splitScript() {
         const script = document.getElementById('scriptContent')?.value?.trim();
-        const apiKey = this.getOpenAIKey();
+        const apiKey = this.getGeminiKey();
 
         // 유효성 검사
         if (!script) {
@@ -28,7 +28,7 @@ const ScriptSplitter = {
         }
 
         if (!apiKey) {
-            alert('OpenAI API 키가 필요합니다. API 설정에서 키를 입력해주세요.');
+            alert('Gemini API 키가 필요합니다. API 설정에서 키를 입력해주세요.');
             return null;
         }
 
@@ -89,11 +89,11 @@ const ScriptSplitter = {
     },
 
     /**
-     * OpenAI API 키 가져오기
+     * Gemini API 키 가져오기
      */
-    getOpenAIKey() {
+    getGeminiKey() {
         // localStorage에서 가져오거나, 설정 페이지에서 입력받은 값 사용
-        return localStorage.getItem('openaiApiKey') || '';
+        return localStorage.getItem('geminiApiKey') || '';
     },
 
     /**
