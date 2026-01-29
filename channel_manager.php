@@ -351,6 +351,84 @@
             transform: scale(1.2);
         }
 
+        /* 채널 정보 모달 스타일 */
+        .channel-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .channel-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .channel-modal {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow: hidden;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .channel-modal-overlay.active .channel-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .channel-modal-header {
+            padding: 1.25rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .channel-modal-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .channel-modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .channel-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .channel-modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            max-height: calc(85vh - 70px);
+        }
+
         /* 복사 버튼 스타일 */
         .copy-box {
             position: relative;
@@ -439,6 +517,18 @@
         </div>
     </div>
 
+    <!-- 채널 정보 모달 -->
+    <div class="channel-modal-overlay" id="channelModal" onclick="closeChannelModal(event)">
+        <div class="channel-modal" onclick="event.stopPropagation()">
+            <div class="channel-modal-header">
+                <div class="channel-modal-title">📋 채널 정보</div>
+                <button class="channel-modal-close" onclick="closeChannelModal()">&times;</button>
+            </div>
+            <div class="channel-modal-body" id="channelModalBody">
+                <!-- 채널 정보가 여기에 표시됨 -->
+            </div>
+        </div>
+    </div>
 
     <script>
         // ==========================================
@@ -916,45 +1006,199 @@
                 }
             });
 
-            // 뷰 초기화 (채널 정보로)
-            currentView = 'channel';
+            // 뷰 초기화 (영상 목록으로)
+            currentView = 'videos';
             const contentTitle = document.getElementById('contentTitle');
             const toggleBtn = document.getElementById('toggleViewBtn');
 
-            if (contentTitle) contentTitle.textContent = '📋 채널 정보';
+            if (contentTitle) contentTitle.textContent = '🎬 영상 목록';
             if (toggleBtn) {
-                toggleBtn.textContent = '🎬 영상 목록 보기';
+                toggleBtn.textContent = '📋 채널 정보 보기';
                 toggleBtn.style.display = 'block'; // 버튼 표시
             }
 
-            // 채널 정보 표시
-            showSubscriptionDetail(selectedSubscription);
+            // 영상 목록 표시
+            loadVideos();
         }
 
 
-        let currentView = 'channel'; // 'channel' 또는 'videos'
+        let currentView = 'videos'; // 'videos' (영상 목록이 기본)
 
         // ==========================================
-        // 뷰 전환 (채널 정보 ↔ 영상 목록)
+        // 채널 정보 모달 열기
         // ==========================================
         function toggleView() {
-            const contentTitle = document.getElementById('contentTitle');
-            const toggleBtn = document.getElementById('toggleViewBtn');
+            if (!selectedSubscription) {
+                alert('채널을 먼저 선택해주세요.');
+                return;
+            }
+            openChannelModal();
+        }
 
-            if (currentView === 'channel') {
-                // 영상 목록으로 전환
-                currentView = 'videos';
-                contentTitle.textContent = '🎬 영상 목록';
-                toggleBtn.textContent = '📋 채널 정보 보기';
-                loadVideos();
-            } else {
-                // 채널 정보로 전환
-                currentView = 'channel';
-                contentTitle.textContent = '📋 채널 정보';
-                toggleBtn.textContent = '🎬 영상 목록 보기';
-                if (selectedSubscription) {
-                    showSubscriptionDetail(selectedSubscription);
+        // ==========================================
+        // 채널 정보 모달 열기
+        // ==========================================
+        function openChannelModal() {
+            const modal = document.getElementById('channelModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
+
+            // 채널 정보 로드
+            loadChannelInfoToModal();
+        }
+
+        // ==========================================
+        // 채널 정보 모달 닫기
+        // ==========================================
+        function closeChannelModal(event) {
+            // 오버레이 클릭 시에만 닫기 (모달 내부 클릭은 제외)
+            if (event && event.target !== event.currentTarget) return;
+
+            const modal = document.getElementById('channelModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // 배경 스크롤 복원
+        }
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('channelModal');
+                if (modal && modal.classList.contains('active')) {
+                    closeChannelModal();
                 }
+            }
+        });
+
+        // ==========================================
+        // 모달에 채널 정보 로드
+        // ==========================================
+        async function loadChannelInfoToModal() {
+            const modalBody = document.getElementById('channelModalBody');
+
+            if (!selectedSubscription) return;
+
+            const snippet = selectedSubscription.snippet;
+            const channelId = snippet.resourceId.channelId;
+            const title = snippet.title;
+            const description = snippet.description || '설명 없음';
+            const thumbnail = snippet.thumbnails?.high?.url || snippet.thumbnails?.medium?.url || '';
+            const publishedAt = new Date(snippet.publishedAt).toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // 로딩 상태 표시
+            modalBody.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <div>채널 정보를 불러오는 중...</div>
+                </div>
+            `;
+
+            try {
+                // 채널 통계 정보 가져오기
+                const channelStats = await fetchChannelStatistics(channelId, currentChannelId);
+
+                // 숫자 포맷팅 함수
+                const formatNumber = (num) => {
+                    if (!num) return '0';
+                    return parseInt(num).toLocaleString('ko-KR');
+                };
+
+                modalBody.innerHTML = `
+                    <div style="text-align: center;">
+                        ${thumbnail ? `<img src="${thumbnail}" alt="${escapeHtml(title)}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 1rem;">` : ''}
+                        <h2 style="font-size: 1.3rem; font-weight: 700; color: #333; margin-bottom: 1rem;">${escapeHtml(title)}</h2>
+                    </div>
+
+                    <div class="detail-box copy-box">
+                        <div class="detail-box-title">📺 채널 ID</div>
+                        <div class="detail-box-content code">${channelId}</div>
+                        <button class="copy-btn" id="copyModalChannelId" onclick="copyToClipboard('${channelId}', 'copyModalChannelId')">📋 복사</button>
+                    </div>
+
+                    <div class="detail-box">
+                        <div class="detail-box-title">📝 채널 설명</div>
+                        <div class="detail-box-content" style="max-height: 100px; overflow-y: auto;">${escapeHtml(description)}</div>
+                    </div>
+
+                    <div class="detail-box">
+                        <div class="detail-box-title">📅 내 구독일</div>
+                        <div class="detail-box-content">${publishedAt}</div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+                        ${channelStats.publishedAt ? `
+                        <div class="detail-box" style="text-align: center; margin-bottom: 0;">
+                            <div class="detail-box-title">🎂 채널 가입일</div>
+                            <div class="detail-box-content" style="font-size: 0.8rem; font-weight: 600; color: #333;">
+                                ${channelStats.publishedAt}
+                            </div>
+                        </div>
+                        ` : ''}
+
+                        <div class="detail-box" style="text-align: center; margin-bottom: 0;">
+                            <div class="detail-box-title">👥 구독자 수</div>
+                            <div class="detail-box-content" style="font-size: 1.1rem; font-weight: 700; color: #667eea;">
+                                ${formatNumber(channelStats.subscriberCount)}명
+                            </div>
+                        </div>
+
+                        <div class="detail-box" style="text-align: center; margin-bottom: 0;">
+                            <div class="detail-box-title">🎬 동영상 수</div>
+                            <div class="detail-box-content" style="font-size: 1.1rem; font-weight: 700; color: #764ba2;">
+                                ${formatNumber(channelStats.videoCount)}개
+                            </div>
+                        </div>
+
+                        <div class="detail-box" style="text-align: center; margin-bottom: 0;">
+                            <div class="detail-box-title">👁️ 총 조회수</div>
+                            <div class="detail-box-content" style="font-size: 1.1rem; font-weight: 700; color: #f093fb;">
+                                ${formatNumber(channelStats.viewCount)}회
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="action-btn" onclick="openChannelPage('${channelId}')">
+                        🔗 YouTube 채널 페이지 열기
+                    </button>
+                `;
+
+            } catch (error) {
+                console.error('❌ 채널 통계 로드 실패:', error);
+
+                // 기본 정보만 표시
+                modalBody.innerHTML = `
+                    <div style="text-align: center;">
+                        ${thumbnail ? `<img src="${thumbnail}" alt="${escapeHtml(title)}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 1rem;">` : ''}
+                        <h2 style="font-size: 1.3rem; font-weight: 700; color: #333; margin-bottom: 1rem;">${escapeHtml(title)}</h2>
+                    </div>
+
+                    <div class="detail-box copy-box">
+                        <div class="detail-box-title">📺 채널 ID</div>
+                        <div class="detail-box-content code">${channelId}</div>
+                        <button class="copy-btn" id="copyModalChannelId" onclick="copyToClipboard('${channelId}', 'copyModalChannelId')">📋 복사</button>
+                    </div>
+
+                    <div class="detail-box">
+                        <div class="detail-box-title">📝 채널 설명</div>
+                        <div class="detail-box-content">${escapeHtml(description)}</div>
+                    </div>
+
+                    <div class="detail-box">
+                        <div class="detail-box-title">📅 구독일</div>
+                        <div class="detail-box-content">${publishedAt}</div>
+                    </div>
+
+                    <div class="error-message" style="padding: 1rem; margin-bottom: 1rem;">
+                        ⚠️ 채널 통계를 불러올 수 없습니다.
+                    </div>
+
+                    <button class="action-btn" onclick="openChannelPage('${channelId}')">
+                        🔗 YouTube 채널 페이지 열기
+                    </button>
+                `;
             }
         }
 
