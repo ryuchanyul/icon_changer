@@ -467,6 +467,101 @@
         .copy-box .detail-box-content {
             padding-right: 5rem;
         }
+
+        /* Outlier Score 배지 스타일 */
+        .outlier-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: help;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .outlier-badge:hover {
+            transform: scale(1.1);
+        }
+
+        .outlier-badge.outlier-hot {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+        }
+
+        .outlier-badge.outlier-high {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
+        }
+
+        .outlier-badge.outlier-good {
+            background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(234, 179, 8, 0.4);
+        }
+
+        .outlier-badge.outlier-normal {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+        }
+
+        .outlier-badge.outlier-low {
+            background: #6b7280;
+            color: white;
+        }
+
+        /* Outlier 툴팁 */
+        .outlier-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            z-index: 100;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .outlier-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .outlier-badge:hover .outlier-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .outlier-tooltip-title {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #f97316;
+        }
+
+        .outlier-tooltip-desc {
+            color: #d1d5db;
+            font-size: 0.7rem;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -1355,9 +1450,9 @@
             `;
 
             try {
-                // ✅ 채널의 업로드 플레이리스트 ID 가져오기
+                // ✅ 채널의 업로드 플레이리스트 ID와 통계 정보 가져오기
                 const channelUrl = new URL('https://www.googleapis.com/youtube/v3/channels');
-                channelUrl.searchParams.append('part', 'contentDetails');
+                channelUrl.searchParams.append('part', 'contentDetails,statistics');
                 channelUrl.searchParams.append('id', channelId);
 
                 const channelResponse = await window.makeYouTubeAPICall(channelUrl.toString(), currentChannelId);
@@ -1368,6 +1463,12 @@
 
                 const channelData = await channelResponse.json();
                 const uploadsPlaylistId = channelData.items[0]?.contentDetails?.relatedPlaylists?.uploads;
+
+                // ✅ 채널 평균 조회수 계산 (Outlier Score용)
+                const channelStats = channelData.items[0]?.statistics || {};
+                const totalViewCount = parseInt(channelStats.viewCount || 0);
+                const totalVideoCount = parseInt(channelStats.videoCount || 1);
+                const avgViewCount = Math.round(totalViewCount / totalVideoCount);
 
                 if (!uploadsPlaylistId) {
                     throw new Error('업로드된 영상이 없습니다.');
@@ -1414,8 +1515,8 @@
                     };
                 });
 
-                // 영상 목록 렌더링
-                renderVideoList(videosWithStats);
+                // 영상 목록 렌더링 (평균 조회수 전달)
+                renderVideoList(videosWithStats, avgViewCount);
 
             } catch (error) {
                 console.error('❌ 영상 목록 로드 실패:', error);
@@ -1431,7 +1532,7 @@
         // ==========================================
         // 영상 목록 렌더링
         // ==========================================
-        function renderVideoList(videos) {
+        function renderVideoList(videos, avgViewCount = 0) {
             const detailContainer = document.getElementById('detailContainer');
 
             if (!videos || videos.length === 0) {
@@ -1443,6 +1544,18 @@
                 `;
                 return;
             }
+
+            // ✅ Outlier Score 계산 함수
+            const getOutlierScore = (viewCount) => {
+                if (avgViewCount <= 0) return { score: 0, class: 'outlier-low', label: '-' };
+                const score = viewCount / avgViewCount;
+
+                if (score >= 10) return { score, class: 'outlier-hot', label: `${Math.round(score)}x` };
+                if (score >= 5) return { score, class: 'outlier-high', label: `${score.toFixed(1)}x` };
+                if (score >= 2) return { score, class: 'outlier-good', label: `${score.toFixed(1)}x` };
+                if (score >= 1) return { score, class: 'outlier-normal', label: `${score.toFixed(1)}x` };
+                return { score, class: 'outlier-low', label: `${score.toFixed(1)}x` };
+            };
 
             let html = '<div style="max-width: 1000px; margin: 0 auto;">';
             let previousDate = null; // 이전 영상의 날짜 저장
@@ -1468,6 +1581,9 @@
                 const now = new Date();
                 const hoursElapsed = Math.max(1, (now - currentDate) / (1000 * 60 * 60)); // 최소 1시간
                 const viewsPerHour = Math.round(viewCount / hoursElapsed);
+
+                // ✅ Outlier Score 계산
+                const outlier = getOutlierScore(viewCount);
 
                 // 조회수 포맷팅
                 const formatNumber = (num) => {
@@ -1539,6 +1655,18 @@
                                 <div style="font-size: 0.8rem; color: #667eea; font-weight: 600; background: rgba(102, 126, 234, 0.1); padding: 0.25rem 0.5rem; border-radius: 4px;">
                                     VPH⚡ ${formatNumber(viewsPerHour)}
                                 </div>
+                                ${avgViewCount > 0 ? `
+                                <div class="outlier-badge ${outlier.class}">
+                                    ${outlier.label}
+                                    <div class="outlier-tooltip">
+                                        <div class="outlier-tooltip-title">Outlier Score</div>
+                                        <div class="outlier-tooltip-desc">
+                                            채널 평균 조회수 대비 ${outlier.score >= 1 ? outlier.score.toFixed(1) + '배' : (outlier.score * 100).toFixed(0) + '%'} 성과<br>
+                                            평균: ${formatNumber(avgViewCount)}회 / 이 영상: ${formatNumber(viewCount)}회
+                                        </div>
+                                    </div>
+                                </div>
+                                ` : ''}
                             </div>
                         </div>
                     </div>
