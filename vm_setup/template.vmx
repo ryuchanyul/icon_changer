@@ -1,0 +1,96 @@
+#!/usr/bin/vmware
+.encoding = "UTF-8"
+config.version = "8"
+virtualHW.version = "21"
+
+# === VM 기본 설정 ===
+displayName = "{{VM_NAME}}"
+guestOS = "windows10-64"
+numvcpus = "{{CPU_CORES}}"
+cpuid.coresPerSocket = "{{CORES_PER_SOCKET}}"
+memsize = "{{RAM_MB}}"
+
+# === 하드웨어 고유 식별자 ===
+uuid.bios = "{{UUID_BIOS}}"
+uuid.location = "{{UUID_LOCATION}}"
+serialNumber = "{{SERIAL_NUMBER}}"
+serialNumber.reflectHost = "FALSE"
+SMBIOS.use12CharSerialNumber = "TRUE"
+
+# === SMBIOS 정보 (메인보드/제조사) ===
+smbios.reflectHost = "FALSE"
+board-id.reflectHost = "FALSE"
+hw.model.reflectHost = "FALSE"
+isolation.tools.getptrlocation.disable = "TRUE"
+
+board-id = "{{BOARD_ID}}"
+hw.model = "{{HW_MODEL}}"
+smbios.assettag = "{{ASSET_TAG}}"
+
+# === 네트워크 어댑터 ===
+ethernet0.present = "TRUE"
+ethernet0.virtualDev = "{{NET_ADAPTER}}"
+ethernet0.connectionType = "nat"
+ethernet0.addressType = "static"
+ethernet0.address = "{{MAC_ADDRESS}}"
+ethernet0.wakeOnPcktRcv = "FALSE"
+ethernet0.allowGuestConnectionControl = "FALSE"
+
+# === 디스크 설정 ===
+scsi0.present = "TRUE"
+scsi0.virtualDev = "lsisas1068"
+scsi0:0.present = "TRUE"
+scsi0:0.fileName = "{{DISK_FILE}}"
+scsi0:0.deviceType = "scsi-hardDisk"
+
+# === CD/DVD ===
+sata0.present = "TRUE"
+sata0:0.present = "TRUE"
+sata0:0.deviceType = "cdrom-image"
+sata0:0.fileName = "{{ISO_PATH}}"
+sata0:0.startConnected = "TRUE"
+
+# === 디스플레이 ===
+svga.vramSize = "{{VRAM_SIZE}}"
+mks.enable3d = "TRUE"
+
+# === USB ===
+usb.present = "TRUE"
+ehci.present = "TRUE"
+usb_xhci.present = "TRUE"
+
+# === 사운드 ===
+sound.present = "TRUE"
+sound.virtualDev = "hdaudio"
+sound.autoDetect = "TRUE"
+
+# === 기타 설정 ===
+firmware = "efi"
+uefi.secureBoot.enabled = "TRUE"
+tools.syncTime = "FALSE"
+time.synchronize.continue = "FALSE"
+time.synchronize.restore = "FALSE"
+time.synchronize.resume.disk = "FALSE"
+time.synchronize.shrink = "FALSE"
+time.synchronize.tools.startup = "FALSE"
+tools.upgrade.policy = "manual"
+
+# === VM 탐지 방지 ===
+monitor_control.restrict_backdoor = "TRUE"
+isolation.tools.getPtrLocation.disable = "TRUE"
+isolation.tools.setPtrLocation.disable = "TRUE"
+isolation.tools.setVersion.disable = "TRUE"
+isolation.tools.getVersion.disable = "TRUE"
+
+# === 공유 폴더 ===
+sharedFolder0.present = "FALSE"
+isolation.tools.hgfs.disable = "TRUE"
+
+# === 전원 설정 ===
+powerType.powerOff = "soft"
+powerType.powerOn = "soft"
+powerType.suspend = "soft"
+powerType.reset = "soft"
+
+# === 스냅샷 ===
+snapshot.action = "keep"
