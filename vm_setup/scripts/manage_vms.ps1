@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 #  VMware VM 환경 관리 스크립트 (Windows PowerShell)
 #  생성된 VM을 목록 조회, 시작, 중지, 삭제할 수 있습니다.
 # ============================================================
@@ -302,22 +302,22 @@ function Show-Usage {
     Write-Host "    VMware VM 환경 관리 도구 (Windows)" -ForegroundColor Blue
     Write-Host "  ============================================================" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "  사용법:" -ForegroundColor Yellow
-    Write-Host '    .\manage_vms.ps1 <명령어> [옵션]'
-    Write-Host ""
-    Write-Host "  명령어:" -ForegroundColor Yellow
-    Write-Host "    list                    등록된 VM 목록 조회"
-    Write-Host "    detail <번호>           VM 상세 정보 조회"
-    Write-Host "    compare                 모든 VM 환경 비교표"
-    Write-Host "    start <번호>            VM 시작"
-    Write-Host "    stop <번호>             VM 중지"
-    Write-Host "    start-all               모든 VM 시작"
-    Write-Host "    stop-all                모든 VM 중지"
-    Write-Host "    snapshot <번호> [이름]  스냅샷 생성"
-    Write-Host "    delete <번호>           VM 삭제"
-    Write-Host "    help                    도움말"
-    Write-Host ""
-    Write-Host "  예시:" -ForegroundColor Yellow
+    Write-Host '  Usage:' -ForegroundColor Yellow
+    Write-Host '    .\manage_vms.ps1 [Command] [Options]'
+    Write-Host ''
+    Write-Host '  Commands:' -ForegroundColor Yellow
+    Write-Host '    list                    VM list'
+    Write-Host '    detail [Number]         VM detail info'
+    Write-Host '    compare                 Compare all VM environments'
+    Write-Host '    start [Number]          Start VM'
+    Write-Host '    stop [Number]           Stop VM'
+    Write-Host '    start-all               Start all VMs'
+    Write-Host '    stop-all                Stop all VMs'
+    Write-Host '    snapshot [Number] [Name]  Create snapshot'
+    Write-Host '    delete [Number]         Delete VM'
+    Write-Host '    help                    Show help'
+    Write-Host ''
+    Write-Host '  Examples:' -ForegroundColor Yellow
     Write-Host '    .\manage_vms.ps1 list'
     Write-Host '    .\manage_vms.ps1 detail 1'
     Write-Host '    .\manage_vms.ps1 start 3'

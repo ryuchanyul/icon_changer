@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 #  VMware VM 환경 자동 생성 스크립트 (Windows PowerShell)
 #  각 VM마다 고유한 하드웨어 프로필을 자동 생성합니다.
 # ============================================================
@@ -238,16 +238,16 @@ function Show-Usage {
     Write-Host "    VMware VM 환경 자동 생성기 (Windows)" -ForegroundColor Blue
     Write-Host "  ============================================================" -ForegroundColor Blue
     Write-Host ""
-    Write-Host "  사용법:" -ForegroundColor Yellow
-    Write-Host "    .\generate_vm.ps1 <VM개수> [옵션]"
-    Write-Host ""
-    Write-Host "  옵션:" -ForegroundColor Yellow
-    Write-Host "    -Dir <경로>        VM 저장 디렉토리  (기본: ~\VMware_VMs)"
-    Write-Host "    -Iso <경로>        Windows ISO 파일 경로"
-    Write-Host "    -DiskSize <GB>     디스크 크기        (기본: 80GB)"
-    Write-Host "    -Help              도움말 출력"
-    Write-Host ""
-    Write-Host "  예시:" -ForegroundColor Yellow
+    Write-Host '  Usage:' -ForegroundColor Yellow
+    Write-Host '    .\generate_vm.ps1 [VM Count] [Options]'
+    Write-Host ''
+    Write-Host '  Options:' -ForegroundColor Yellow
+    Write-Host '    -Dir [Path]        VM save directory  (default: ~\VMware_VMs)'
+    Write-Host '    -Iso [Path]        Windows ISO file path'
+    Write-Host '    -DiskSize [GB]     Disk size          (default: 80GB)'
+    Write-Host '    -Help              Show help'
+    Write-Host ''
+    Write-Host '  Examples:' -ForegroundColor Yellow
     Write-Host '    .\generate_vm.ps1 5'
     Write-Host '    .\generate_vm.ps1 3 -Dir "D:\MyVMs" -Iso "C:\ISO\Win10.iso"'
     Write-Host '    .\generate_vm.ps1 10 -DiskSize 120'
